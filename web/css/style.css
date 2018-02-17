@@ -1,0 +1,69 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 13, 2017, 10:29:01 PM
+    Author     : Lovreone
+*/
+
+body {
+    /* background-image: url("../images/gplaypattern.png"); */ /* For testing different out repeat patterns */
+    background-image: url("../images/grunge_wall.png");
+    background-repeat: repeat; 
+    margin-top: 60px; /* If header is fixed to the top - Bootstrap rquirement */
+    margin-bottom: 130px; /* # Depends on footer height - used so that content would not be hidden below footer on mobile reoulutions */
+}
+
+div.stylish-div-background {
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid #909090;
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px #888888;
+    padding: 20px;
+    margin: 70px auto 20px auto;
+    min-height: 500px;
+}
+
+div.inner-div {
+    padding-top: 30px;
+    width: 90%;
+    margin: auto;
+}
+
+div.footer {
+    padding-top: 15px;
+}
+
+long-words-filter { 
+    overflow:hidden; /* or overflow:scroll; - forses internal scroll inside a div */
+}
+
+textarea {
+    resize: vertical;
+}
+
+.carousel-control { /* Bootstrap overide - Solves Home Slider bottom shadow issue */
+    bottom: 25px;    
+}
+
+ul.contact-items li {
+    list-style: none;
+    margin-left: -20px;
+}
+
+.glyphicon { /* Bootstrap override - Used for Contact us li items */
+    padding-right: 10px; 
+}
+
+p.validation-error {
+    color: red;
+    font-size: 15px;
+}
+
+p.success-message {
+    color: green;
+    font-size: 15px;  
+}
+
