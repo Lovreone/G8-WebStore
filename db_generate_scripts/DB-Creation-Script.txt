@@ -1,0 +1,120 @@
+﻿/* ---------------------------
+##############################
+Project name: G8-WebStore
+Database name: webstore_db
+Note: Script creates database, tables/columns and relations between entities
+##############################
+--------------------------- */
+CREATE SCHEMA IF NOT EXISTS `webstore_db`;
+USE `webstore_db` ;
+
+/* ---------------------------
+USERS TABLE
+--------------------------- */ 
+CREATE TABLE `webstore_db`.`users` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `is_admin` TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC));
+
+/* ---------------------------
+USER_DETAILS TABLE
+--------------------------- */
+CREATE TABLE `webstore_db`.`user_details` (
+  `user_id` INT(11) NOT NULL,
+  `first_name` VARCHAR(45) NOT NULL,
+  `last_name` VARCHAR(45) NOT NULL,
+  UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC),
+  CONSTRAINT `fk_userid`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `webstore_db`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+/* ---------------------------
+PRODUCTS TABLE
+--------------------------- */
+CREATE TABLE `webstore_db`.`products` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `product_name` VARCHAR(45) NOT NULL,
+  `unit_price` INT(11) UNSIGNED NOT NULL,
+  `stock_quantity` INT(11) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`));
+
+/* ---------------------------
+PRODUCT_DETAILS TABLE
+--------------------------- */
+CREATE TABLE `webstore_db`.`product_details` (
+  `product_id` INT(11) NOT NULL,
+  `description` VARCHAR(600) NOT NULL,
+  `img_location` VARCHAR(255) NOT NULL DEFAULT 'images/placeholder.png',
+  UNIQUE INDEX `product_id_UNIQUE` (`product_id` ASC),
+  CONSTRAINT `fk_productid`
+    FOREIGN KEY (`product_id`)
+    REFERENCES `webstore_db`.`products` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+/* ---------------------------
+ORDERS TABLE
+--------------------------- */
+CREATE TABLE `webstore_db`.`orders` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `user_id` INT(11) NOT NULL,
+  `status` ENUM('pending', 'expired', 'completed') NOT NULL DEFAULT 'pending',
+  `total_price` INT(11) UNSIGNED NOT NULL,
+  `timestamp` VARCHAR(45) NOT NULL DEFAULT '00.00.0000 15:30',
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_userid_o`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `webstore_db`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+/* ---------------------------
+ORDER_DETAILS TABLE
+--------------------------- */
+CREATE TABLE `webstore_db`.`order_details` (
+  `order_id` INT NOT NULL,
+  `first_name` VARCHAR(45) NOT NULL,
+  `last_name` VARCHAR(45) NOT NULL,
+  `city` VARCHAR(45) NOT NULL,
+  `country` VARCHAR(45) NOT NULL,
+  `street_address` VARCHAR(95) NOT NULL,
+  `cc_type` ENUM('Visa', 'MasterCard') NOT NULL,
+  `cc_number` VARCHAR(45) NOT NULL,
+  `exp_month` TINYINT(2) UNSIGNED NOT NULL,
+  `exp_year` SMALLINT(4) UNSIGNED NOT NULL,
+  `card_holder` VARCHAR(45) NOT NULL,
+  `cvv_number` TINYINT(4) UNSIGNED NOT NULL,
+  UNIQUE INDEX `order_id_UNIQUE` (`order_id` ASC),
+  CONSTRAINT `fk_orderid`
+    FOREIGN KEY (`order_id`)
+    REFERENCES `webstore_db`.`orders` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+/* ---------------------------
+ORDER_PRODUCT TABLE
+--------------------------- */
+CREATE TABLE `webstore_db`.`order_product` (
+  `order_id` INT(11) NOT NULL,
+  `product_id` INT(11) NOT NULL,
+  `product_qty` INT(11) UNSIGNED NOT NULL,
+  INDEX `fk_order_id_idx` (`order_id` ASC),
+  INDEX `fk_product_id_idx` (`product_id` ASC),
+  CONSTRAINT `fk_order_id`
+    FOREIGN KEY (`order_id`)
+    REFERENCES `webstore_db`.`orders` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_id`
+    FOREIGN KEY (`product_id`)
+    REFERENCES `webstore_db`.`products` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+	
+	
+	

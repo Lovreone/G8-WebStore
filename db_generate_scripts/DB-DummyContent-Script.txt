@@ -1,0 +1,105 @@
+/* ---------------------------
+##############################
+Project name: G8-WebStore
+Database name: webstore_db
+Note: Script populates tables with dummy content (products and users)
+
+IMPORTANT!
+Only use this script on initial project setup. It will not work if you 
+already have user/products in DB or if IDs used in this script are taken
+-	users, user_details (IDs 1-3)
+-	products, product_details (IDs 1-10)
+##############################
+--------------------------- */ 
+
+/* ---------------------------
+USERS TABLE
+1	admin@webstore.com	qwe123	1
+2	pera@gmail.com		12345	0
+3  	laza@hotmail.com	54321	0
+--------------------------- */ 
+INSERT INTO `webstore_db`.`users` (`email`, `password`, `is_admin`) VALUES ('admin@webstore.com', 'qwe123', '1');
+INSERT INTO `webstore_db`.`users` (`email`, `password`, `is_admin`) VALUES ('pera@gmail.com', '12345', '0');
+INSERT INTO `webstore_db`.`users` (`email`, `password`, `is_admin`) VALUES ('laza@hotmail.com', '54321', '0');
+
+
+/* ---------------------------
+USER_DETAILS TABLE
+1	Admin	Adminovic
+2	Pera	Peric
+3	Laza	Lazic
+--------------------------- */
+INSERT INTO `webstore_db`.`user_details` (`user_id`, `first_name`, `last_name`) VALUES ('1', 'Admin', 'Adminovic');
+INSERT INTO `webstore_db`.`user_details` (`user_id`, `first_name`, `last_name`) VALUES ('2', 'Pera', 'Peric');
+INSERT INTO `webstore_db`.`user_details` (`user_id`, `first_name`, `last_name`) VALUES ('3', 'Laza', 'Lazic');
+
+
+/* ---------------------------
+PRODUCTS TABLE
+1	ASUS ZenFone MAX ZC550KL	600		10000
+2	BlackBerry PRIV				400		2000
+3	Cherry Mobile Flare P1		200		1500
+4	HCL Me Mobile Fuel 5		500		10000
+5	HP Elite X3					300		10000
+6 	Kata i5						250		5000
+7	KINGZONE Z1 Plus			450		4000
+8	Lava Z10					350		10000
+9	LG G6						600		15000
+10 	Placeholder phone test		400		12000
+--------------------------- */ 
+INSERT INTO `webstore_db`.`products` (`product_name`, `unit_price`, `stock_quantity`) VALUES ('ASUS ZenFone MAX ZC550KL', '600', '10000');
+INSERT INTO `webstore_db`.`products` (`product_name`, `unit_price`, `stock_quantity`) VALUES ('BlackBerry PRIV', '400', '2000');
+INSERT INTO `webstore_db`.`products` (`product_name`, `unit_price`, `stock_quantity`) VALUES ('Cherry Mobile Flare P1', '200', '1500');
+INSERT INTO `webstore_db`.`products` (`product_name`, `unit_price`, `stock_quantity`) VALUES ('HCL Me Mobile Fuel 5', '500', '10000');
+INSERT INTO `webstore_db`.`products` (`product_name`, `unit_price`, `stock_quantity`) VALUES ('HP Elite X3', '300', '10000');
+INSERT INTO `webstore_db`.`products` (`product_name`, `unit_price`, `stock_quantity`) VALUES ('Kata i5', '250', '5000');
+INSERT INTO `webstore_db`.`products` (`product_name`, `unit_price`, `stock_quantity`) VALUES ('KINGZONE Z1 Plus', '450', '4000');
+INSERT INTO `webstore_db`.`products` (`product_name`, `unit_price`, `stock_quantity`) VALUES ('Lava Z10', '350', '10000');
+INSERT INTO `webstore_db`.`products` (`product_name`, `unit_price`, `stock_quantity`) VALUES ('LG G6', '600', '15000');
+INSERT INTO `webstore_db`.`products` (`product_name`, `unit_price`, `stock_quantity`) VALUES ('Placeholder phone test', '400', '12000');
+
+
+/* ---------------------------
+PRODUCT_DETAILS TABLE
+1	Lipsum		images/products/ASUS ZenFone MAX ZC550KL.jpg	
+2	Lipsum		images/products/BlackBerry PRIV.jpg
+3	Lipsum		images/products/Cherry Mobile Flare P1.jpg
+4	Lipsum		images/products/HCL Me Mobile Fuel 5.jpg
+5	Lipsum		images/products/HP Elite X3.jpg
+6	Lipsum		images/products/Kata i5.jpg
+7	Lipsum		images/products/KINGZONE Z1 Plus.jpg
+8	Lipsum		images/products/Lava Z10.jpg
+9	Lipsum		images/products/LG G6.jpg	
+10	Lipsum		images/placeholder.png
+
+Lipsum:
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut maximus urna. Suspendisse porta enim et volutpat elementum. Proin dignissim nulla libero, vitae tristique leo dapibus vestibulum. Curabitur a egestas nisi, ut porta velit. Mauris erat mi, porttitor in ex ac, vehicula dapibus magna. Donec mauris libero, viverra eget auctor vel, fringilla eu velit. Duis quis metus sapien. Pellentesque sit amet lacinia augue. Nulla ut iaculis nibh, at interdum neque. Pellentesque facilisis bibendum mauris eu pellentesque.
+--------------------------- */
+INSERT INTO `webstore_db`.`product_details` (`product_id`, `description`, `img_location`) VALUES ('1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut maximus urna. Suspendisse porta enim et volutpat elementum. Proin dignissim nulla libero, vitae tristique leo dapibus vestibulum. Curabitur a egestas nisi, ut porta velit. Mauris erat mi, porttitor in ex ac, vehicula dapibus magna. Donec mauris libero, viverra eget auctor vel, fringilla eu velit. Duis quis metus sapien. Pellentesque sit amet lacinia augue. Nulla ut iaculis nibh, at interdum neque. Pellentesque facilisis bibendum mauris eu pellentesque.', 'images/products/ASUS ZenFone MAX ZC550KL.jpg');
+INSERT INTO `webstore_db`.`product_details` (`product_id`, `description`, `img_location`) VALUES ('2', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut maximus urna. Suspendisse porta enim et volutpat elementum. Proin dignissim nulla libero, vitae tristique leo dapibus vestibulum. Curabitur a egestas nisi, ut porta velit. Mauris erat mi, porttitor in ex ac, vehicula dapibus magna. Donec mauris libero, viverra eget auctor vel, fringilla eu velit. Duis quis metus sapien. Pellentesque sit amet lacinia augue. Nulla ut iaculis nibh, at interdum neque. Pellentesque facilisis bibendum mauris eu pellentesque.', 'images/products/BlackBerry PRIV.jpg');
+INSERT INTO `webstore_db`.`product_details` (`product_id`, `description`, `img_location`) VALUES ('3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut maximus urna. Suspendisse porta enim et volutpat elementum. Proin dignissim nulla libero, vitae tristique leo dapibus vestibulum. Curabitur a egestas nisi, ut porta velit. Mauris erat mi, porttitor in ex ac, vehicula dapibus magna. Donec mauris libero, viverra eget auctor vel, fringilla eu velit. Duis quis metus sapien. Pellentesque sit amet lacinia augue. Nulla ut iaculis nibh, at interdum neque. Pellentesque facilisis bibendum mauris eu pellentesque.', 'images/products/Cherry Mobile Flare P1.jpg');
+INSERT INTO `webstore_db`.`product_details` (`product_id`, `description`, `img_location`) VALUES ('4', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut maximus urna. Suspendisse porta enim et volutpat elementum. Proin dignissim nulla libero, vitae tristique leo dapibus vestibulum. Curabitur a egestas nisi, ut porta velit. Mauris erat mi, porttitor in ex ac, vehicula dapibus magna. Donec mauris libero, viverra eget auctor vel, fringilla eu velit. Duis quis metus sapien. Pellentesque sit amet lacinia augue. Nulla ut iaculis nibh, at interdum neque. Pellentesque facilisis bibendum mauris eu pellentesque.', 'images/products/HCL Me Mobile Fuel 5.jpg');
+INSERT INTO `webstore_db`.`product_details` (`product_id`, `description`, `img_location`) VALUES ('5', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut maximus urna. Suspendisse porta enim et volutpat elementum. Proin dignissim nulla libero, vitae tristique leo dapibus vestibulum. Curabitur a egestas nisi, ut porta velit. Mauris erat mi, porttitor in ex ac, vehicula dapibus magna. Donec mauris libero, viverra eget auctor vel, fringilla eu velit. Duis quis metus sapien. Pellentesque sit amet lacinia augue. Nulla ut iaculis nibh, at interdum neque. Pellentesque facilisis bibendum mauris eu pellentesque.', 'images/products/HP Elite X3.jpg');
+INSERT INTO `webstore_db`.`product_details` (`product_id`, `description`, `img_location`) VALUES ('6', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut maximus urna. Suspendisse porta enim et volutpat elementum. Proin dignissim nulla libero, vitae tristique leo dapibus vestibulum. Curabitur a egestas nisi, ut porta velit. Mauris erat mi, porttitor in ex ac, vehicula dapibus magna. Donec mauris libero, viverra eget auctor vel, fringilla eu velit. Duis quis metus sapien. Pellentesque sit amet lacinia augue. Nulla ut iaculis nibh, at interdum neque. Pellentesque facilisis bibendum mauris eu pellentesque.', 'images/products/Kata i5.jpg');
+INSERT INTO `webstore_db`.`product_details` (`product_id`, `description`, `img_location`) VALUES ('7', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut maximus urna. Suspendisse porta enim et volutpat elementum. Proin dignissim nulla libero, vitae tristique leo dapibus vestibulum. Curabitur a egestas nisi, ut porta velit. Mauris erat mi, porttitor in ex ac, vehicula dapibus magna. Donec mauris libero, viverra eget auctor vel, fringilla eu velit. Duis quis metus sapien. Pellentesque sit amet lacinia augue. Nulla ut iaculis nibh, at interdum neque. Pellentesque facilisis bibendum mauris eu pellentesque.', 'images/products/KINGZONE Z1 Plus.jpg');
+INSERT INTO `webstore_db`.`product_details` (`product_id`, `description`, `img_location`) VALUES ('8', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut maximus urna. Suspendisse porta enim et volutpat elementum. Proin dignissim nulla libero, vitae tristique leo dapibus vestibulum. Curabitur a egestas nisi, ut porta velit. Mauris erat mi, porttitor in ex ac, vehicula dapibus magna. Donec mauris libero, viverra eget auctor vel, fringilla eu velit. Duis quis metus sapien. Pellentesque sit amet lacinia augue. Nulla ut iaculis nibh, at interdum neque. Pellentesque facilisis bibendum mauris eu pellentesque.', 'images/products/Lava Z10.jpg');
+INSERT INTO `webstore_db`.`product_details` (`product_id`, `description`, `img_location`) VALUES ('9', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut maximus urna. Suspendisse porta enim et volutpat elementum. Proin dignissim nulla libero, vitae tristique leo dapibus vestibulum. Curabitur a egestas nisi, ut porta velit. Mauris erat mi, porttitor in ex ac, vehicula dapibus magna. Donec mauris libero, viverra eget auctor vel, fringilla eu velit. Duis quis metus sapien. Pellentesque sit amet lacinia augue. Nulla ut iaculis nibh, at interdum neque. Pellentesque facilisis bibendum mauris eu pellentesque.', 'images/products/LG G6.jpg');
+INSERT INTO `webstore_db`.`product_details` (`product_id`, `description`, `img_location`) VALUES ('10', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut maximus urna. Suspendisse porta enim et volutpat elementum. Proin dignissim nulla libero, vitae tristique leo dapibus vestibulum. Curabitur a egestas nisi, ut porta velit. Mauris erat mi, porttitor in ex ac, vehicula dapibus magna. Donec mauris libero, viverra eget auctor vel, fringilla eu velit. Duis quis metus sapien. Pellentesque sit amet lacinia augue. Nulla ut iaculis nibh, at interdum neque. Pellentesque facilisis bibendum mauris eu pellentesque.', 'images/placeholder.png');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
