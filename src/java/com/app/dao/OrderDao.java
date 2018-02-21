@@ -33,7 +33,7 @@ public class OrderDao {
         session.close();
     }
     
-    // Adds an Order to DB (UserRegistration servlet)
+    // Adds an Order to DB (UserRegistration servlet) - WORKS
     public boolean createOrder(Order order) {
         int orderId = 0;
         startSession();
@@ -54,7 +54,7 @@ public class OrderDao {
     
     }
     
-    // Retrieves one Order from DB, TEST OUT FURTHER (product-single.jsp) 
+    // Retrieves one Order from DB - WORKS
     public Order getSingleOrder(String orderId) {
         Order order = new Order();
         startSession();
@@ -73,15 +73,14 @@ public class OrderDao {
         return order;
     }   
     
-    // Retrieves specific Order from DB, TEST OUT FURTHER (product-single.jsp) 
-    public Order getSpecificOrder(String userId, String status) {
+    // Retrieves Active (Pending) Order from DB
+    public Order getActiveOrder(String userId) {
         Order order = new Order();
         startSession();
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery("from Order o where o.user=:user and o.status=:status");
+            Query query = session.createQuery("from Order o where o.user=:user and o.status='pending'");
             query.setString("user", userId);
-            query.setString("status", status);
             order = (Order) query.list().get(0);      
             tx.commit();
         } catch (HibernateException ex) {
@@ -102,7 +101,7 @@ public class OrderDao {
         startSession();
         try {
             tx = session.beginTransaction();
-            // HQL - Doesnt work - Cant access OrderProduct key subitems (FK columns)
+            // Cant access OrderProduct key subitems (FK columns)using HQL
             /*Query query = session.createQuery("select count(*) from OrderProduct od where od.orderid=:order and od.productid=:product");
             query.setString("order", String.valueOf(orderId));
             query.setString("product", String.valueOf(productId));
@@ -125,30 +124,7 @@ public class OrderDao {
         
         return num > 0;
     }
-    
-    
-    public String mergeObjectTest(OrderProduct op) {
-        String result = "~";
-        startSession();
-        try {
-            tx = session.beginTransaction();
-            
-
-                result = String.valueOf(session.merge(op)); // TESTIRATI STA MERGE RADI
-
-            
-            tx.commit();
-        } catch (HibernateException ex) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            System.out.println("Error: " + ex);
-        } finally {
-            stopSession();
-        }
-        return result;
-    }
-    
+      
     
     public String addToCart(OrderProduct op) {
         String result = "~";
@@ -183,7 +159,27 @@ public class OrderDao {
     
     
     
-    // Updates Order in DB 
+    public String mergeObjectTest(OrderProduct op) {
+        String result = "~";
+        startSession();
+        try {
+            tx = session.beginTransaction();
+            
+                result = String.valueOf(session.merge(op)); // TESTIRATI STA MERGE RADI
+            
+            tx.commit();
+        } catch (HibernateException ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println("Error: " + ex);
+        } finally {
+            stopSession();
+        }
+        return result;
+    }
+    
+    // Updates Order in DB - WORKS
     public void updateOrder(Order order) {
         startSession();
         try {
