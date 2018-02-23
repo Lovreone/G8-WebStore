@@ -15,6 +15,7 @@ import com.app.domains.Product;
 import com.app.domains.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -88,38 +89,17 @@ public class CreateOrder extends HttpServlet {
         String userId = request.getParameter("userid");
         
         PrintWriter out = response.getWriter();
-        out.println("GENERAL STATUS LOG:\n Selected qty: " + qty + ",\n ProductID: " + productId + 
-                ",\n LoggedUserID: " + (!userId.isEmpty() ? userId : "NOT LOGGED IN!") + "\n");
-        out.println("-------------------------------------------");
+        out.println("------------------------\nGENERAL STATUS LOG:\n------------------------\n"
+                + " Selected qty: " + qty + "\n"
+                + " ProductID: " + productId + "\n"
+                + " LoggedUserID: " + (!userId.isEmpty() ? userId : "NOT LOGGED IN!"));
         
-        /*#################################################
-            GENERAL IDEA BEHIND SHOPPING PROCESS WORKFLOW:
-          #################################################
-            1. User Registers:
-                New User added to database;
-                'pending' Order created automatically for that User;
-
-            2. User AddsProductToCart (Product page):
-                New OrderProduct row is created with selected Qty in DB;
-            3. User AddsSameProductToCartAgain (Product page):
-                Existing OrderProduct row is updated with new Qty in DB;
-                *** It should work like this: when user adds 3 products to cart 
-                from product page, and in cart we already had 5 of that same product, 
-                cart will be updated to have the newer qty value for that product(3).
-                This is the way it works on AliExpress. ***
-            4. User ChangesProductQty (Cart page):
-                Existing OrderProduct row is updated with new Qty in DB;
-            5. User RemovesProductFromCart (Cart page):
-                Existing OrderProduct row is deleted from DB;
-
-            6. User CompletesOrder:
-                Current 'pending' Order for that User changed to 'completed'; 
-                New 'pending' Order created for that User;
-        ################################################# */
-        
+        out.println("\n###############################################################\n");
+                
         // GENERAL ITEMS USED FOR DATABASE OPERATIONS
         OrderDao oDao = new OrderDao();
         UserDao uDao = new UserDao();
+        ProductDao pDao = new ProductDao();
         
         /*#################################################
            CREATE A NEW ORDER MANUALLY - TEST (Must be Logged in!) - WORKS!
@@ -128,7 +108,8 @@ public class CreateOrder extends HttpServlet {
         get existing (Logged) User, connect User and Order and save Order to DB
         Note: tests if oDao.createOrder(order) method works properly, and if 
         Hibernate mapping between User and Order (OneToMany) is done properly.
-        This scenario will probably not be used in final version
+        This scenario will not be used in final version. User registration creates
+        a first 'pending' order, use this if you want to avoid registering a new User.
         #################################################
         
         Order order = new Order("pending", 0, "00.00.0000 00:00");
@@ -138,13 +119,15 @@ public class CreateOrder extends HttpServlet {
             order.setUser(u);
         }
         boolean status = oDao.createOrder(order);
-        out.println("CREATE ORDER - CHANGES:\nIs Order creation successful? " + status + 
-                ",\n orderId is: " + order.getOrderId());
-        */ 
+        out.println("------------------------\nCREATE ORDER - CHANGES:\n------------------------\n"
+                + "Is Order creation successful? " + status + "\n "
+                + "orderId is: " + order.getOrderId() + "\n "
+        ); */
+        
         
         
         /*#################################################
-           6. COMPLETE EXISTING ORDER > CREATES NEW PENDING ORDER - TEST (Must be Logged in!) - WORKS!
+           6. COMPLETE ACTIVE ORDER > CREATE NEW PENDING ORDER - TEST (Must be Logged in!) - WORKS!
           #################################################
         Desc: Getting an existing active Order from DB by logged in User's id. Method should
         return the "pending" Order for that User, which should be only 1 result.
@@ -155,7 +138,7 @@ public class CreateOrder extends HttpServlet {
         Note: This logic tests if Hibernate mapping between Order and OrderDetails
         (OneToOne) is implemented correctly. This logic will be used at the end 
         of the shopping proces when a User completes an order.
-        ################################################# 
+        #################################################
         
         Order order = oDao.getActiveOrder(userId);
         OrderDetails od = new OrderDetails("Pera", "Peric", "Beograd", "Serbia", "Petra Lekica 3/2", "Visa", "1234567890123456", 12, 2019, "Pera Peric", 123);
@@ -163,16 +146,20 @@ public class CreateOrder extends HttpServlet {
         od.setOrder(order);
         order.setStatus("completed");
         oDao.updateOrder(order);
-        out.println("UPDATE ORDER - CHANGES:\nWhich Order is updated in DB as 'completed'?\n\t " + oDao.getSingleOrder(String.valueOf(order.getOrderId())).toString() + 
-                ",\nOrder's Details saved in DB are:\n\t " + oDao.getSingleOrder(String.valueOf(order.getOrderId())).getOrderDetails().toString() + "\n");
+        out.println("------------------------\nUPDATE ORDER - CHANGES:\n------------------------\n"
+                + "Which Order is updated in DB as 'completed'?\n\t" + oDao.getSingleOrder(String.valueOf(order.getOrderId())).toString() + "\n"
+                + "Order's Details saved in DB are:\n\t" + oDao.getSingleOrder(String.valueOf(order.getOrderId())).getOrderDetails().toString() + "\n"
+        );
         od = null;
         order = new Order("pending", 0, "00.00.0000 00:00");
         User u = uDao.getSingleUser(userId);  
         order.setUser(u);
         boolean status = oDao.createOrder(order);
-        out.println("CREATE ORDER - CHANGES:\nIs new 'pending' Order creation for this User successful? " + status + 
-                ",\nNew 'pending' Order created in DB: \n\t" + order.toString() );
-        */
+        out.println("------------------------\nCREATE ORDER - CHANGES:\n------------------------\n"
+                + "Is new 'pending' Order creation for this User successful?\n\t" + status + "\n"
+                + "New 'pending' Order created in DB:\n\t" + order.toString() + "\n"
+        ); */
+        
        
         
         
@@ -180,31 +167,50 @@ public class CreateOrder extends HttpServlet {
         /*#################################################
            ADD PRODUCT TO CART - TEST (Must be Logged in!)
           #################################################
-        Desc: 
-        Note: 
+        Desc: LoggedIn User clicks on AddToCart button on Product page. Selected 
+        product with qty of 1(default) is added to cart (OrderProducts table).
+        
+        Note: This logic tests if Hibernate mapping between Order and Product
+        (ManyToMany) is implemented correctly. Logic will be used behind 
+        AddToCart button(form) on Single Product page.
         ################################################# */
         
         
+              
+        // ADDS PRODUCT TO CART (CREATES NEW OD ROW IN DB) 
+        Order order = oDao.getActiveOrder("9"); // WORKS - 
+            out.println("Active Order (GetFromDB):\n\t" + order);
+        Product product = pDao.getSingleProduct("13"); // WORKS - 
+            out.println("Selected Product (GetFromDB):\n\t" + product);
+        OrderProduct op = new OrderProduct(order, product, qty); // WORKS - 
+            out.println("New OrderProduct creation (InMemory):\n\t" + op);
         
+            
+        out.println("\nBEFORE: order.getOrderProducts():\n"
+                + "\tOld qty:\t" + order.getOrderProducts() + "\n"
+                + "\tNew qty:\t" + qty + "\n"
         
-        // znamo usera (get user), znamo order (get order)
-        // znamo proizvod > dodajemo proizvod u order
-            // oduzimamo proizvod iz ordera
-        // listamo order da vidimo promene
+        );    
+        Set<OrderProduct> orderProducts = order.getOrderProducts();
+        for (OrderProduct singleOP : orderProducts) {
+            if (op.getPk().toString().equals(singleOP.getPk().toString())) {
+                singleOP.setProductQty(singleOP.getProductQty() + qty);
+                out.println("OBJECTS HAVE SAME PK VALUES - MERGING!");
+            } else {
+                out.println("OBJECTS DONT HAVE SAM PK VALUES - ADDING!");
+                order.getOrderProducts().add(op); // Doesn't work with LAZY but works with EAGER - Order.java:61
+            }
+        }
+
+        out.println("\nAFTER: order.getOrderProducts():\n\t" + order.getOrderProducts());
+          
+        // EVERYTHING ABOVE THIS LINE IS STABLE AND WORKS
         
-        // ADDS PRODUCT TO CART (CREATES NEW OD ROW IN DB)
-        /*ProductDao pDao = new ProductDao();
-        Order order = oDao.getOrderByStatus("8", "pending"); // WORKS - out.println(order.toString());
-        Product product = pDao.getSingleProduct("13"); // WORKS - out.println(product.toString());
-        OrderProduct op = new OrderProduct();
-            op.setOrder(order);
-            op.setProduct(product);
-            op.setProductQty(qty);
-        // String result = oDao.addToCart(op); // SAVES
-        String result = oDao.mergeObjectTest(op); // MERGES
-        out.println("result: " + result);
-        out.println("OP: " + op);*/
-        
+    //String status = oDao.updateOrder(order); // UPDATES
+        // String status = oDao.addToCart(op); // SAVES
+        // String status = oDao.mergeObjectTest(op); // MERGES
+        //out.println("result: " + status);
+
         
         
         

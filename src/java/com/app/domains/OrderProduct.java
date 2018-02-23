@@ -35,7 +35,9 @@ public class OrderProduct implements Serializable {
     @Column(name = "product_qty")
     private int productQty;
 
-    public OrderProduct(int productQty) {
+    public OrderProduct(Order order, Product product, int productQty) {
+        this.pk.setOrder(order);
+        this.pk.setProduct(product);
         this.productQty = productQty;
     }
   

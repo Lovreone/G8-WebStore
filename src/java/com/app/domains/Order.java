@@ -58,7 +58,9 @@ public class Order implements Serializable {
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private User user; 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.order")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.order", cascade = CascadeType.ALL) 
+    // Added in 'cascade = CascadeType.ALL' - Mkyong tutorial had this only on Product.java side
+    // It was LAZY in Mkyong tutorial but order.getOrderProducts().add(op);(AddToCart) doesnt work with LAZY
     private Set<OrderProduct> orderProducts = new HashSet<OrderProduct>(0); // ManyToMany
 
     public Order(String status, int totalPrice, String timeStamp) {

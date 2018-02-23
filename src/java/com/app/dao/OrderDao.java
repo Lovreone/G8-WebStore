@@ -73,7 +73,7 @@ public class OrderDao {
         return order;
     }   
     
-    // Retrieves Active (Pending) Order from DB
+    // Retrieves Active (Pending) Order from DB - WORKS
     public Order getActiveOrder(String userId) {
         Order order = new Order();
         startSession();
@@ -125,7 +125,6 @@ public class OrderDao {
         return num > 0;
     }
       
-    
     public String addToCart(OrderProduct op) {
         String result = "~";
         int orderId = op.getPk().getOrder().getOrderId();
@@ -141,8 +140,6 @@ public class OrderDao {
                 result = String.valueOf(session.save(op)); // RADI VAN USLOVA - DOdaje novi red u bazu
             }*/
             result = String.valueOf(session.save(op));
-            
-
             
             tx.commit();
         } catch (HibernateException ex) {
@@ -180,11 +177,13 @@ public class OrderDao {
     }
     
     // Updates Order in DB - WORKS
-    public void updateOrder(Order order) {
+    public String updateOrder(Order order) {
+        String status = "";
         startSession();
         try {
             tx = session.beginTransaction();
             session.update(order);
+            status += "Successful DB insert!";
             tx.commit();
         } catch (HibernateException ex) {
             if (tx != null) {
@@ -194,6 +193,7 @@ public class OrderDao {
         } finally {
             stopSession();
         }
+        return status;
     }
     
     // Deletes an Order from DB, TEST OUT FURTHER (ManageProducts, cms-product-manage.jsp)    
