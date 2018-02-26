@@ -102,7 +102,7 @@ public class CreateOrder extends HttpServlet {
         ProductDao pDao = new ProductDao();
         
         /*#################################################
-           CREATE A NEW ORDER MANUALLY - TEST (Must be Logged in!) - WORKS!
+           1. CREATE A NEW ORDER MANUALLY - TEST (Must be Logged in!) - WORKS!
           #################################################
         Desc: Manual creation of an Order, where we create a new Order object,
         get existing (Logged) User, connect User and Order and save Order to DB
@@ -127,6 +127,74 @@ public class CreateOrder extends HttpServlet {
         
         
         /*#################################################
+           2. & 3. ADD PRODUCT TO CART - TEST (LoggedInUser HardCoded) - WORKS!
+          #################################################
+        Desc: LoggedIn User enters desired quantity and clicks on AddToCart button
+        on Product page. Selected product and qty is added to cart (OrderProducts table).
+        Getting active Order and selected Product from DB. Creating an OrderProduct 
+        object and linking it to the User and Order objects, and seting it's qty.
+        Checking if selected Product already exists in Active Order for that User,
+        adding it if not, and updateing it if already exists with new qty in memory 
+        before writing it into database. Updating Order product in DB and with it 
+        the OrderProduct(cart item) as well.
+        Note: This logic tests if Hibernate mapping between Order and Product
+        (ManyToMany) is implemented correctly. Logic will be used behind 
+        AddToCart button(form) on Single Product page.
+        Test Adding if: 1)Cart is Empty 2)Adding same product to cart twice 3)Adding 
+        same product to cart twice while there are multiple different products in Order.
+        ################################################# 
+        
+        // ADDS PRODUCT TO CART (CREATES NEW OD ROW IN DB) 
+        Order order = oDao.getActiveOrder("10"); // WORKS - 
+            out.println("Active Order (GetFromDB):\n\t" + order);
+        Product product = pDao.getSingleProduct(String.valueOf(productId)); // WORKS - 
+            out.println("Selected Product (GetFromDB):\n\t" + product);
+        OrderProduct op = new OrderProduct(order, product, qty); // WORKS - 
+            out.println("New OrderProduct creation (InMemory):\n\t" + op);
+        
+        // CONSOLE LOG - OLD CART STATE + PENDING UPDATE
+        out.println("\n-------------------------------------------------------------------\nCART STATE BEFORE ADDING: (DB>MEMORY)");     
+        int i = 1;
+        for (OrderProduct singleItem : order.getOrderProducts()) {
+            out.println("\tItem " + i++ + ": " + singleItem);
+        }
+        out.println("PENDING UPDATE:\n\tItem x: " + op + "\n-------------------------------------------------------------------\n");
+
+        // CHECK IF PRODUCT ALEADY IN CART & UPDATE OR ADD TO CART
+        Set<OrderProduct> cartItemsList = order.getOrderProducts();
+        boolean itemWasAlreadyInCart = false;
+        for (OrderProduct singleItem : cartItemsList) { 
+            if (op.getPk().toString().equals(singleItem.getPk().toString())) {
+                singleItem.setProductQty(singleItem.getProductQty() + qty);
+                itemWasAlreadyInCart = true;
+                out.println("LOGIC DONE: Updating existing product in cart!"); 
+            }     
+        }
+        if (!itemWasAlreadyInCart) { 
+            order.getOrderProducts().add(op); // Doesn't work with LAZY but works with EAGER - Order.java:61
+            out.println("LOGIC DONE: Adding a new product to cart!");
+        }
+        
+        // CONSOLE LOG - NEW CART STATE (MEMORY)
+        out.println("\n-------------------------------------------------------------------\nNEW CART STATE: (MEMORY)");     
+        int j = 1;
+        for (OrderProduct singleItem : order.getOrderProducts()) {
+            out.println("\tItem " + j++ + ": " + singleItem);
+        }
+        out.println("-------------------------------------------------------------------\n");
+
+        // MAIN APPROACH - MKYONG WAY (WORKING WITH ORDER)
+        String status = oDao.updateOrder(order); // UPDATES
+        out.println("Attempting to save Order to DB: " + status);  
+        
+        // ALTERNATE APPROACH - NOT MKYONG WAY (WORKING WITH OP ITEMS) - NOT USED, BUT WORKS   
+            // This approach works directly with OP and is not what mkyong's tutorial intended
+            // String status = oDao.addToCart(op); // SAVES
+            // String status = oDao.mergeObjectTest(op); // MERGES
+        */
+        
+        
+        /*#################################################
            6. COMPLETE ACTIVE ORDER > CREATE NEW PENDING ORDER - TEST (Must be Logged in!) - WORKS!
           #################################################
         Desc: Getting an existing active Order from DB by logged in User's id. Method should
@@ -138,7 +206,7 @@ public class CreateOrder extends HttpServlet {
         Note: This logic tests if Hibernate mapping between Order and OrderDetails
         (OneToOne) is implemented correctly. This logic will be used at the end 
         of the shopping proces when a User completes an order.
-        #################################################
+        ################################################# 
         
         Order order = oDao.getActiveOrder(userId);
         OrderDetails od = new OrderDetails("Pera", "Peric", "Beograd", "Serbia", "Petra Lekica 3/2", "Visa", "1234567890123456", 12, 2019, "Pera Peric", 123);
@@ -147,8 +215,8 @@ public class CreateOrder extends HttpServlet {
         order.setStatus("completed");
         oDao.updateOrder(order);
         out.println("------------------------\nUPDATE ORDER - CHANGES:\n------------------------\n"
-                + "Which Order is updated in DB as 'completed'?\n\t" + oDao.getSingleOrder(String.valueOf(order.getOrderId())).toString() + "\n"
-                + "Order's Details saved in DB are:\n\t" + oDao.getSingleOrder(String.valueOf(order.getOrderId())).getOrderDetails().toString() + "\n"
+                + "Which Order is updated in DB as 'completed'?\n\t" + order.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()) - java.lang.StackOverflowError
+                + "Order's Details saved in DB are:\n\t" + od.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()).getOrderDetails() - java.lang.StackOverflowError
         );
         od = null;
         order = new Order("pending", 0, "00.00.0000 00:00");
@@ -158,71 +226,27 @@ public class CreateOrder extends HttpServlet {
         out.println("------------------------\nCREATE ORDER - CHANGES:\n------------------------\n"
                 + "Is new 'pending' Order creation for this User successful?\n\t" + status + "\n"
                 + "New 'pending' Order created in DB:\n\t" + order.toString() + "\n"
-        ); */
-        
-       
-        
+        ); 
+        */
+                
         
         
         /*#################################################
-           ADD PRODUCT TO CART - TEST (Must be Logged in!)
+           MANUAL CHECK IF ROW WITH KEY(ORDER/PRODUCT) EXISTS IN DB - WORKS!
           #################################################
-        Desc: LoggedIn User clicks on AddToCart button on Product page. Selected 
-        product with qty of 1(default) is added to cart (OrderProducts table).
+        Desc: Method returnes true if more than 0 rows with specified key 
+        combination exists in database.
+        Note: Method will not be used within the main app logic, but can be used
+        to perform manual checks in DB if necessary.
+        #################################################
         
-        Note: This logic tests if Hibernate mapping between Order and Product
-        (ManyToMany) is implemented correctly. Logic will be used behind 
-        AddToCart button(form) on Single Product page.
-        ################################################# */
+        out.println("Do we have more that 0 rows in DB for (orderid=18 and productid=7): " + oDao.checkIfDuplicateRow(18, 7));
+        */
         
         
-              
-        // ADDS PRODUCT TO CART (CREATES NEW OD ROW IN DB) 
-        Order order = oDao.getActiveOrder("9"); // WORKS - 
-            out.println("Active Order (GetFromDB):\n\t" + order);
-        Product product = pDao.getSingleProduct("13"); // WORKS - 
-            out.println("Selected Product (GetFromDB):\n\t" + product);
-        OrderProduct op = new OrderProduct(order, product, qty); // WORKS - 
-            out.println("New OrderProduct creation (InMemory):\n\t" + op);
-        
-            
-        out.println("\nBEFORE: order.getOrderProducts():\n"
-                + "\tOld qty:\t" + order.getOrderProducts() + "\n"
-                + "\tNew qty:\t" + qty + "\n"
-        
-        );    
-        Set<OrderProduct> orderProducts = order.getOrderProducts();
-        for (OrderProduct singleOP : orderProducts) {
-            if (op.getPk().toString().equals(singleOP.getPk().toString())) {
-                singleOP.setProductQty(singleOP.getProductQty() + qty);
-                out.println("OBJECTS HAVE SAME PK VALUES - MERGING!");
-            } else {
-                out.println("OBJECTS DONT HAVE SAM PK VALUES - ADDING!");
-                order.getOrderProducts().add(op); // Doesn't work with LAZY but works with EAGER - Order.java:61
-            }
-        }
 
-        out.println("\nAFTER: order.getOrderProducts():\n\t" + order.getOrderProducts());
-          
-        // EVERYTHING ABOVE THIS LINE IS STABLE AND WORKS
-        
-    //String status = oDao.updateOrder(order); // UPDATES
-        // String status = oDao.addToCart(op); // SAVES
-        // String status = oDao.mergeObjectTest(op); // MERGES
-        //out.println("result: " + status);
 
         
-        
-        
-        // CHECKS IF ROW WITH KEY EXISTS IN DB
-        // out.println("Do we have more that 0 rows in DB for (orderid=12 and productid=13): " + oDao.checkIfDuplicateRow(11, 13));
-        
-        
-        
-        
-        
-        //order.setTimeStamp("Promenjeno");
-        //oDao.updateOrder(order); // WORKS INDEPENDENTLY (UPDATE)
         
         
         

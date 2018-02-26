@@ -35,9 +35,10 @@
             
             <form action="CreateOrder" method="post">
                 <!-- Hidden field product id -->
-                <input type="hidden" name="productid" value="13<%--=product.getProductId()--%>"/>
+                Product id (1,2,3,4,5,6,7,8,9,11,13,14):<br>
+                <input type="number" name="productid" value="13<%--=product.getProductId()--%>"/>
                 <input type="hidden" name="userid" value="${sessionScope.userid}"/>
-                Product qty:<br>
+                <br>Product qty:<br>
                 <input type="number" name="quantity" value="1">
                 <br>
                 <input type="submit" value="Add to Cart">
