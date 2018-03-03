@@ -57,6 +57,7 @@ public class OrderDao {
     
     // Retrieves specific Order from DB - WORKS, NOT USED
     // Will be used for Dashboard (User,Admin) later
+    // THROWS STACKOVERFLOW ERROR - INVESTIGATE FURTHER!!!
     public Order getSingleOrder(int orderId) {
         Order order = new Order();
         startSession();
@@ -106,7 +107,7 @@ public class OrderDao {
         try {
             tx = session.beginTransaction();
             session.update(order);
-            status += "Successful DB insert!";
+            status += "Successful DB update!";
             tx.commit();
         } catch (HibernateException ex) {
             if (tx != null) {
@@ -120,7 +121,7 @@ public class OrderDao {
     }
     
     // Check if order_product table already contains a row with Order/Product key combination - WORKS, NOT USED
-    // It is not and probably will not be used in app logic, unless for manual tests 
+    // It is currently not and probably will not be used in app logic, unless for manual tests 
     public boolean checkIfDuplicateRow(int orderId, int productId) {
         int num = 0;
         BigInteger bigInt = BigInteger.ZERO;
@@ -152,7 +153,7 @@ public class OrderDao {
     }
     
         
-    // ############ PROTOTYPES BELOW ############
+    // ############ PROTOTYPES BELOW - DELETE WHEN DEEMED UNNECESSARY ############
     
     
     // Method should have add Product to cart, but is inconclusive - INCONCLUSIVE, NOT USED
@@ -193,7 +194,7 @@ public class OrderDao {
         try {
             tx = session.beginTransaction();
             
-                result = String.valueOf(session.merge(op)); // TESTIRATI STA MERGE RADI
+                result = String.valueOf(session.merge(op)); // TEST WHAT MERGE DOES
             
             tx.commit();
         } catch (HibernateException ex) {

@@ -8,8 +8,7 @@
     "Once user logges out, he is redirected to login page. By using browser's back button he 
     was able to go back to the secure page he was previously on. Refreshing the page would 
     hide the contents from the user". Also added redirects from secure pages to login page 
-    Part of solution found here https://www.youtube.com/watch?v=gQLQ0t9B5yk
-    */
+    Part of solution found here https://www.youtube.com/watch?v=gQLQ0t9B5yk */
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
     response.setHeader("Pragma", "no-cache"); // HTTP 1.0
     response.setHeader("Expires", "0"); // Proxies

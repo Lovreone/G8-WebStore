@@ -15,6 +15,7 @@ import com.app.domains.Product;
 import com.app.domains.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -92,7 +93,8 @@ public class CreateOrder extends HttpServlet {
         out.println("------------------------\nGENERAL STATUS LOG:\n------------------------\n"
                 + " Selected qty: " + qty + "\n"
                 + " ProductID: " + productId + "\n"
-                + " LoggedUserID: " + (!userId.isEmpty() ? userId : "NOT LOGGED IN!"));
+                + " LoggedUserID: " + (!userId.isEmpty() ? userId : "NOT LOGGED IN!")
+        );
         
         out.println("\n###############################################################\n");
                 
@@ -185,12 +187,104 @@ public class CreateOrder extends HttpServlet {
 
         // MAIN APPROACH - MKYONG WAY (WORKING WITH ORDER)
         String status = oDao.updateOrder(order); // UPDATES
-        out.println("Attempting to save Order to DB: " + status);  
+        out.println("Attempting to update Order in DB: " + status);  
         
         // ALTERNATE APPROACH - NOT MKYONG WAY (WORKING WITH OP ITEMS) - NOT USED, BUT WORKS   
             // This approach works directly with OP and is not what mkyong's tutorial intended
             // String status = oDao.addToCart(op); // SAVES
             // String status = oDao.mergeObjectTest(op); // MERGES
+        */
+        
+        
+        /*#################################################
+           4. & 5. CHANGE ITEM IN CART (UPDATE/DELETE) - TO CODE - TO TEST
+          #################################################
+        Desc: LoggedIn User is on Cart page and sees a list of items in cart (if
+        not empty). Each cart item will have two forms, one for quantity update and 
+        other for item deletion. User will input changed qty and submit changes, 
+        after which servlet will update item qty and redirect back to Cart page.
+        If user clicks on Delete button, and confirms with JS Y/N popup, servlet 
+        will delete item form cart and take user pack to cart page.
+        Note: This proves Hibernate mapping ManytToMany is implemented correctly
+        To Test: All cart operations - Add, Edit, Delete
+        ################################################# */
+        
+        String buttonAction = request.getParameter("buttonaction");
+        String productIdKey = request.getParameter("productid");
+        String quantity = request.getParameter("quantity");
+        
+        
+        Order order;
+        Product product;
+        OrderProduct itemToRemove;
+        Set<OrderProduct> cartItemsList;
+        
+        // User comes from Cart page-Delete (shopping-cart.jsp) 
+        if (buttonAction.equals("delete")) {
+
+            out.println("DELETE BRANCH:\n");
+            //order = oDao.getSingleOrder(24); // - java.lang.StackOverflowError
+            
+            order = oDao.getActiveOrder(userId); // WORKS - out.println("\norder:\n" + order);
+            product = pDao.getSingleProduct(productIdKey); // WORKS - out.println("\nproduct:\n" + product);
+            itemToRemove = new OrderProduct(order, product, Integer.parseInt(quantity)); // WORKS - out.println("\ndeletedItem:\n" + itemToRemove);
+            
+            
+            out.println("\nCart state BEFORE(Memory):\n");
+            for (OrderProduct item : order.getOrderProducts()) { // Just for log
+                out.println(item + "\n");
+            }
+            
+           
+            
+            out.println("\nATTEMPTING DELETION OF '" + itemToRemove + "'\n");
+            // order.getOrderProducts().remove(itemToRemove); // DOESNT WORK
+            cartItemsList = order.getOrderProducts(); 
+            for (Iterator<OrderProduct> iterator = cartItemsList.iterator(); iterator.hasNext();) { 
+                OrderProduct op =  iterator.next();
+                if (op.getPk().toString().equals(itemToRemove.getPk().toString())) {
+                    iterator.remove(); 
+                    // WORKS - Added orphanRemoval=true to Order.java for this change to be saved in DB too
+                }       
+            }
+            
+            
+            
+            out.println("\nCart state AFTER(Memory):\n");
+            for (OrderProduct item : order.getOrderProducts()) { // Just for log
+                out.println(item + "\n");
+            }
+            
+            
+            out.println("\nATTEMPTING TO SAVE CHANGES TO DB\n");
+            String status = oDao.updateOrder(order);
+            out.println("Attempting to update Order in DB: " + status);
+            //request.getRequestDispatcher("/shopping-cart.jsp").forward(request, response);
+        
+        // User comes from Cart page-Edit (shopping-cart.jsp) 
+        } else if (buttonAction.equals("update")) {
+            out.println("UPDATE BRANCH");
+            // request.setAttribute("productid", productId);
+            // request.getRequestDispatcher("/cms-product-edit.jsp").forward(request, response); 
+            
+        } else {
+            out.println("NOR DELETE, NOR UPDATE BRANCH");
+        }
+        response.sendRedirect("shopping-cart.jsp");
+        
+        
+        /* PSEUDO CODE
+
+        SERVLET SIDE LOGIC: (check ManageProducts it should have similar logic):
+            if ("delete") {
+                iDao.deleteItem(item);
+            } else if {
+                item.setQty("40");
+                iDao.changeItem(item);
+            } else {
+                "Oops smething went wrong"
+            }
+            redirect to Cart page;
         */
         
         
@@ -232,7 +326,7 @@ public class CreateOrder extends HttpServlet {
         
         
         /*#################################################
-           MANUAL CHECK IF ROW WITH KEY(ORDER/PRODUCT) EXISTS IN DB - WORKS!
+           0. MANUAL CHECK IF ROW WITH KEY(ORDER/PRODUCT) EXISTS IN DB - WORKS!
           #################################################
         Desc: Method returnes true if more than 0 rows with specified key 
         combination exists in database.
@@ -242,6 +336,20 @@ public class CreateOrder extends HttpServlet {
         
         out.println("Do we have more that 0 rows in DB for (orderid=18 and productid=7): " + oDao.checkIfDuplicateRow(18, 7));
         */
+        
+        /*#################################################
+           0. MAKE ADDTOCART BUTTON AVAILABLE TO LOGGED IN USERS - TO CODE - TO TEST
+          #################################################
+        Desc: TBD
+        OR Make it always visible but make user login/register
+        ################################################# */
+        
+        /*#################################################
+           0. MAKE PRODUCTS DISABLED INSTEAD OF DELETED - TO CODE - TO TEST
+          #################################################
+        Desc: TBD
+        OR copy title for Order reference
+        ################################################# */
         
         
 

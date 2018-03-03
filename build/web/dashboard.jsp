@@ -30,7 +30,7 @@
                     <p>Dashboard Quicklinks: <b>COMING SOON!</b></p>
                     <ul>
                         <li><a href="product-list.jsp">Explore our latest products</a></li>
-                        <li><a href="#">My Shopping cart</a></li>
+                        <li><a href="shopping-cart.jsp">My Shopping cart</a></li>
                         <li><a href="#">Completed Orders</a></li>
                         <li><a href="#">Edit profile information</a></li>     
                     </ul>    
