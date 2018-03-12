@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 
 body {
-    /* background-image: url("../images/gplaypattern.png"); */ /* For testing different out repeat patterns */
+    /* background-image: url("../images/gplaypattern.png"); */ /* For testing different repeat patterns */
     background-image: url("../images/grunge_wall.png");
     background-repeat: repeat; 
     margin-top: 60px; /* If header is fixed to the top - Bootstrap rquirement */
@@ -32,8 +32,24 @@ div.inner-div {
     margin: auto;
 }
 
+div.inner-div-full-width { /* Used for Shop pages */
+    padding-top: 10px;
+    margin: auto;
+    min-height: 400px;
+}
+
+div.centered-content { /* Used for Empty/Restricted page messages */
+    padding-top: 100px; 
+    text-align: center; 
+    vertical-align: middle; 
+}
+
 div.footer {
     padding-top: 15px;
+}
+
+span.no-padding { /* Bootstrap overide - Use for button icons without text */
+    padding-right: 0px;
 }
 
 long-words-filter { 
@@ -55,6 +71,60 @@ ul.contact-items li {
 
 .glyphicon { /* Bootstrap override - Used for Contact us li items */
     padding-right: 10px; 
+}
+
+h4.cart { 
+    font-size: 17px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+table.float-right {
+    float: right;
+}
+
+.table>tbody>tr>td.cart { /* Bootstrap override - Used for tables on Shop pages */
+    vertical-align: middle;
+}
+
+li.aligned-right { /* Bootstrap override - Used for Cart page items */
+    text-align: right; 
+}
+
+td.aligned-right { /* Bootstrap override - For tables on Shop pages */
+    text-align: right;
+}
+
+div.one-third { /* Three columns, use for 1/3 and 2/3 */
+    padding: 15px;
+    float: left;  
+    width: 33.3%;
+}
+
+div.last-third { /* Three columns, use only for 3/3 */
+    padding: 15px;
+    float: left; 
+    width: 33.4%;
+}
+
+div.clear { /* Three columns, use after 3/3 */
+    clear: both;
+}
+
+div.s-bottom-spacing {
+    margin-bottom: 10px;
+}
+
+div.custom-spacing-cart {
+    padding: 10px 5px 0 5px;
+}
+
+table.no-bottom-spacing {
+    margin-bottom: 10px;
+}
+
+input.margin-offset {
+    margin-bottom: 3px;
 }
 
 p.validation-error {

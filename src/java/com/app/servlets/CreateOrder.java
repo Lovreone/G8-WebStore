@@ -213,63 +213,47 @@ public class CreateOrder extends HttpServlet {
         String productIdKey = request.getParameter("productid");
         String quantity = request.getParameter("quantity");
         
-        
-        Order order;
-        Product product;
-        OrderProduct itemToRemove;
+        Order order = oDao.getActiveOrder(userId); // WORKS - out.println("\norder:\n" + order);
+        Product product = pDao.getSingleProduct(productIdKey); // WORKS - out.println("\nproduct:\n" + product);
+        OrderProduct selectedCartItem = new OrderProduct(order, product, Integer.parseInt(quantity)); // WORKS - out.println("\ndeletedItem:\n" + itemToRemove);
         Set<OrderProduct> cartItemsList;
         
-        // User comes from Cart page-Delete (shopping-cart.jsp) 
-        if (buttonAction.equals("delete")) {
-
-            out.println("DELETE BRANCH:\n");
-            //order = oDao.getSingleOrder(24); // - java.lang.StackOverflowError
-            
-            order = oDao.getActiveOrder(userId); // WORKS - out.println("\norder:\n" + order);
-            product = pDao.getSingleProduct(productIdKey); // WORKS - out.println("\nproduct:\n" + product);
-            itemToRemove = new OrderProduct(order, product, Integer.parseInt(quantity)); // WORKS - out.println("\ndeletedItem:\n" + itemToRemove);
-            
-            
-            out.println("\nCart state BEFORE(Memory):\n");
-            for (OrderProduct item : order.getOrderProducts()) { // Just for log
-                out.println(item + "\n");
-            }
-            
-           
-            
-            out.println("\nATTEMPTING DELETION OF '" + itemToRemove + "'\n");
-            // order.getOrderProducts().remove(itemToRemove); // DOESNT WORK
-            cartItemsList = order.getOrderProducts(); 
-            for (Iterator<OrderProduct> iterator = cartItemsList.iterator(); iterator.hasNext();) { 
-                OrderProduct op =  iterator.next();
-                if (op.getPk().toString().equals(itemToRemove.getPk().toString())) {
-                    iterator.remove(); 
-                    // WORKS - Added orphanRemoval=true to Order.java for this change to be saved in DB too
-                }       
-            }
-            
-            
-            
-            out.println("\nCart state AFTER(Memory):\n");
-            for (OrderProduct item : order.getOrderProducts()) { // Just for log
-                out.println(item + "\n");
-            }
-            
-            
-            out.println("\nATTEMPTING TO SAVE CHANGES TO DB\n");
-            String status = oDao.updateOrder(order);
-            out.println("Attempting to update Order in DB: " + status);
-            //request.getRequestDispatcher("/shopping-cart.jsp").forward(request, response);
-        
-        // User comes from Cart page-Edit (shopping-cart.jsp) 
-        } else if (buttonAction.equals("update")) {
-            out.println("UPDATE BRANCH");
-            // request.setAttribute("productid", productId);
-            // request.getRequestDispatcher("/cms-product-edit.jsp").forward(request, response); 
-            
-        } else {
-            out.println("NOR DELETE, NOR UPDATE BRANCH");
+        out.println("\nCart state BEFORE(Memory):\n");
+        for (OrderProduct item : order.getOrderProducts()) { // Just for log
+            out.println(item + "\n");
         }
+
+        out.println("\nATTEMPTING TO CHANGE '" + selectedCartItem + "'\n");
+        // order.getOrderProducts().remove(itemToRemove); // DOESNT WORK
+        cartItemsList = order.getOrderProducts(); 
+        for (Iterator<OrderProduct> iterator = cartItemsList.iterator(); iterator.hasNext();) { 
+            OrderProduct op =  iterator.next();
+            if (op.getPk().toString().equals(selectedCartItem.getPk().toString())) {
+
+                // User comes from Cart page-Delete (shopping-cart.jsp) 
+                if (buttonAction.equals("delete")) {
+                    iterator.remove(); // WORKS - Added orphanRemoval=true to Order.java for this change to be saved in DB too
+                    out.println("LOGIC DONE: Deleting product from cart!");
+
+                // User comes from Cart page-Edit (shopping-cart.jsp) 
+                } else if (buttonAction.equals("update")) {
+                    op.setProductQty(Integer.parseInt(quantity));
+                    out.println("LOGIC DONE: Updating existing product in cart!");
+
+                } else {
+                    out.print("!!!NEITHER DELETE NOR UPDATE BRANCH: An Error has occured!!!");
+                }
+            }       
+        }
+
+        out.println("\nCART STATE AFTER(MEMORY):\n");
+        for (OrderProduct item : order.getOrderProducts()) { // Just for log
+            out.println(item + "\n");
+        }
+
+        String status = oDao.updateOrder(order);
+        out.println("\nATTEMPTING TO SAVE CHANGES TO DB: " + status);
+            
         response.sendRedirect("shopping-cart.jsp");
         
         
