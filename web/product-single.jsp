@@ -39,8 +39,41 @@
                             <div class="col-5 col-sm-5 col-md-5" style="text-align: left">
                                 <h3><b>Model: </b><%=p.getProductName()%></h3>
                                 <h4><b>Price: </b><%=p.getUnitPrice()%> &euro;</h4>
-                                <h4><b>Stock: </b><%=p.getStockQuantity()%></h4>
+                                <%--<h4><b>Stock: </b><%=p.getStockQuantity()%></h4>--%>
                                 <h4><b>Description: </b></h4><p><%=p.getProductDetails().getDescription()%></p>
+                                
+                                <c:choose> 
+                                    <c:when test="${sessionScope.userid != null && sessionScope.isadmin == false}"><%-- USER ONLY --%>
+                                    <form action="AddToCart" method="post">
+                                        <input type="hidden" name="userid" value="${sessionScope.userid}"/>
+                                        <input type="hidden" name="productid" value="<%=p.getProductId()%>"/>
+
+                                        <select class="selectpicker" name="quantity">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+
+                                        <!--input type="number" min="1" max="5" name="quantity" value="1"/-->
+
+                                        <button type="submit" class="btn btn-primary" name="addtocart">
+                                            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>Add To Cart
+                                        </button>
+                                    </form>
+                                    </c:when> <%-- /USER ONLY --%>    
+                                    <c:otherwise><%-- ELSE --%>
+
+                                        <!-- PLEASE LOGIN MESSAGE -->
+                                        <div>
+                                            <h4>In order to be able to buy this product, you need to <a href="login.jsp">log in</a>!</h4> 
+                                        </div>
+
+                                    </c:otherwise><%-- /ELSE --%>    
+                                </c:choose>    
+                                    
+
                             </div>
                         </div>  
                     </div>          

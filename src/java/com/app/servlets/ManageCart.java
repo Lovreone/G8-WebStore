@@ -93,7 +93,7 @@ public class ManageCart extends HttpServlet {
         To Test: All cart operations - Add, Edit, Delete
         ################################################# */
         
-        PrintWriter out = response.getWriter();
+        PrintWriter out = response.getWriter(); // Remove redirect at the end to see the logs
         
         String userId = request.getParameter("userid");
         String buttonAction = request.getParameter("buttonaction");
@@ -105,10 +105,10 @@ public class ManageCart extends HttpServlet {
         
         Order order = oDao.getActiveOrder(userId); // WORKS - out.println("\norder:\n" + order);
         Product product = pDao.getSingleProduct(productIdKey); // WORKS - out.println("\nproduct:\n" + product);
-        OrderProduct selectedCartItem = new OrderProduct(order, product, Integer.parseInt(quantity)); // WORKS - out.println("\ndeletedItem:\n" + itemToRemove);
+        OrderProduct selectedCartItem = new OrderProduct(order, product, Integer.parseInt(quantity)); // WORKS - out.println("\ndeletedItem:\n" + selectedCartItem);
         Set<OrderProduct> cartItemsList;
         
-        out.println("\nCart state BEFORE(Memory):\n"); // JUST FOR LOG
+        out.println("\nCart state BEFORE(Memory):\n"); // USED FOR STATUS LOG
         for (OrderProduct item : order.getOrderProducts()) { 
             out.println(item + "\n");
         }
@@ -135,7 +135,7 @@ public class ManageCart extends HttpServlet {
             }       
         }
 
-        out.println("\nCART STATE AFTER(MEMORY):\n"); // JUST FOR LOG
+        out.println("\nCART STATE AFTER(MEMORY):\n"); // USED FOR STATUS LOG
         for (OrderProduct item : order.getOrderProducts()) { 
             out.println(item + "\n");
         }

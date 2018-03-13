@@ -126,151 +126,17 @@ public class CreateOrder extends HttpServlet {
                 + "orderId is: " + order.getOrderId() + "\n "
         ); */
         
-        
-        
         /*#################################################
-           2. & 3. ADD PRODUCT TO CART - TEST (LoggedInUser HardCoded) - WORKS!
+           2. & 3. ADD PRODUCT TO CART
           #################################################
-        Desc: LoggedIn User enters desired quantity and clicks on AddToCart button
-        on Product page. Selected product and qty is added to cart (OrderProducts table).
-        Getting active Order and selected Product from DB. Creating an OrderProduct 
-        object and linking it to the User and Order objects, and seting it's qty.
-        Checking if selected Product already exists in Active Order for that User,
-        adding it if not, and updateing it if already exists with new qty in memory 
-        before writing it into database. Updating Order product in DB and with it 
-        the OrderProduct(cart item) as well.
-        Note: This logic tests if Hibernate mapping between Order and Product
-        (ManyToMany) is implemented correctly. Logic will be used behind 
-        AddToCart button(form) on Single Product page.
-        Test Adding if: 1)Cart is Empty 2)Adding same product to cart twice 3)Adding 
-        same product to cart twice while there are multiple different products in Order.
-        ################################################# 
-        
-        // ADDS PRODUCT TO CART (CREATES NEW OD ROW IN DB) 
-        Order order = oDao.getActiveOrder("10"); // WORKS - 
-            out.println("Active Order (GetFromDB):\n\t" + order);
-        Product product = pDao.getSingleProduct(String.valueOf(productId)); // WORKS - 
-            out.println("Selected Product (GetFromDB):\n\t" + product);
-        OrderProduct op = new OrderProduct(order, product, qty); // WORKS - 
-            out.println("New OrderProduct creation (InMemory):\n\t" + op);
-        
-        // CONSOLE LOG - OLD CART STATE + PENDING UPDATE
-        out.println("\n-------------------------------------------------------------------\nCART STATE BEFORE ADDING: (DB>MEMORY)");     
-        int i = 1;
-        for (OrderProduct singleItem : order.getOrderProducts()) {
-            out.println("\tItem " + i++ + ": " + singleItem);
-        }
-        out.println("PENDING UPDATE:\n\tItem x: " + op + "\n-------------------------------------------------------------------\n");
-
-        // CHECK IF PRODUCT ALEADY IN CART & UPDATE OR ADD TO CART
-        Set<OrderProduct> cartItemsList = order.getOrderProducts();
-        boolean itemWasAlreadyInCart = false;
-        for (OrderProduct singleItem : cartItemsList) { 
-            if (op.getPk().toString().equals(singleItem.getPk().toString())) {
-                singleItem.setProductQty(singleItem.getProductQty() + qty);
-                itemWasAlreadyInCart = true;
-                out.println("LOGIC DONE: Updating existing product in cart!"); 
-            }     
-        }
-        if (!itemWasAlreadyInCart) { 
-            order.getOrderProducts().add(op); // Doesn't work with LAZY but works with EAGER - Order.java:61
-            out.println("LOGIC DONE: Adding a new product to cart!");
-        }
-        
-        // CONSOLE LOG - NEW CART STATE (MEMORY)
-        out.println("\n-------------------------------------------------------------------\nNEW CART STATE: (MEMORY)");     
-        int j = 1;
-        for (OrderProduct singleItem : order.getOrderProducts()) {
-            out.println("\tItem " + j++ + ": " + singleItem);
-        }
-        out.println("-------------------------------------------------------------------\n");
-
-        // MAIN APPROACH - MKYONG WAY (WORKING WITH ORDER)
-        String status = oDao.updateOrder(order); // UPDATES
-        out.println("Attempting to update Order in DB: " + status);  
-        
-        // ALTERNATE APPROACH - NOT MKYONG WAY (WORKING WITH OP ITEMS) - NOT USED, BUT WORKS   
-            // This approach works directly with OP and is not what mkyong's tutorial intended
-            // String status = oDao.addToCart(op); // SAVES
-            // String status = oDao.mergeObjectTest(op); // MERGES
-        */
-        
-        
-        /*#################################################
-           4. & 5. CHANGE ITEM IN CART (UPDATE/DELETE) - TO CODE - TO TEST
-          #################################################
-        Desc: LoggedIn User is on Cart page and sees a list of items in cart (if
-        not empty). Each cart item will have two forms, one for quantity update and 
-        other for item deletion. User will input changed qty and submit changes, 
-        after which servlet will update item qty and redirect back to Cart page.
-        If user clicks on Delete button, and confirms with JS Y/N popup, servlet 
-        will delete item form cart and take user pack to cart page.
-        Note: This proves Hibernate mapping ManytToMany is implemented correctly
-        To Test: All cart operations - Add, Edit, Delete
+            Migrated to AddToCart servlet
         ################################################# */
-        
-        String buttonAction = request.getParameter("buttonaction");
-        String productIdKey = request.getParameter("productid");
-        String quantity = request.getParameter("quantity");
-        
-        Order order = oDao.getActiveOrder(userId); // WORKS - out.println("\norder:\n" + order);
-        Product product = pDao.getSingleProduct(productIdKey); // WORKS - out.println("\nproduct:\n" + product);
-        OrderProduct selectedCartItem = new OrderProduct(order, product, Integer.parseInt(quantity)); // WORKS - out.println("\ndeletedItem:\n" + itemToRemove);
-        Set<OrderProduct> cartItemsList;
-        
-        out.println("\nCart state BEFORE(Memory):\n");
-        for (OrderProduct item : order.getOrderProducts()) { // Just for log
-            out.println(item + "\n");
-        }
-
-        out.println("\nATTEMPTING TO CHANGE '" + selectedCartItem + "'\n");
-        // order.getOrderProducts().remove(itemToRemove); // DOESNT WORK
-        cartItemsList = order.getOrderProducts(); 
-        for (Iterator<OrderProduct> iterator = cartItemsList.iterator(); iterator.hasNext();) { 
-            OrderProduct op =  iterator.next();
-            if (op.getPk().toString().equals(selectedCartItem.getPk().toString())) {
-
-                // User comes from Cart page-Delete (shopping-cart.jsp) 
-                if (buttonAction.equals("delete")) {
-                    iterator.remove(); // WORKS - Added orphanRemoval=true to Order.java for this change to be saved in DB too
-                    out.println("LOGIC DONE: Deleting product from cart!");
-
-                // User comes from Cart page-Edit (shopping-cart.jsp) 
-                } else if (buttonAction.equals("update")) {
-                    op.setProductQty(Integer.parseInt(quantity));
-                    out.println("LOGIC DONE: Updating existing product in cart!");
-
-                } else {
-                    out.print("!!!NEITHER DELETE NOR UPDATE BRANCH: An Error has occured!!!");
-                }
-            }       
-        }
-
-        out.println("\nCART STATE AFTER(MEMORY):\n");
-        for (OrderProduct item : order.getOrderProducts()) { // Just for log
-            out.println(item + "\n");
-        }
-
-        String status = oDao.updateOrder(order);
-        out.println("\nATTEMPTING TO SAVE CHANGES TO DB: " + status);
-            
-        response.sendRedirect("shopping-cart.jsp");
-        
-        
-        /* PSEUDO CODE
-
-        SERVLET SIDE LOGIC: (check ManageProducts it should have similar logic):
-            if ("delete") {
-                iDao.deleteItem(item);
-            } else if {
-                item.setQty("40");
-                iDao.changeItem(item);
-            } else {
-                "Oops smething went wrong"
-            }
-            redirect to Cart page;
-        */
-        
+              
+        /*#################################################
+           4. & 5. CHANGE ITEM IN CART (UPDATE/DELETE)
+          #################################################
+            Migrated to ManageCart servlet
+        ################################################# */
         
         /*#################################################
            6. COMPLETE ACTIVE ORDER > CREATE NEW PENDING ORDER - TEST (Must be Logged in!) - WORKS!

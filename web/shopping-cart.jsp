@@ -55,7 +55,7 @@
                                         <form action="ManageCart" method="post">
                                             <input type="hidden" name="userid" value="${sessionScope.userid}"/>
                                             <input type="hidden" name="productid" value="<%=cartItem.getProduct().getProductId()%>"/>
-                                            <input class="margin-offset" type="number" min="1" max="10" name="quantity" value="<%=cartItem.getProductQty()%>"/>
+                                            <input class="margin-offset" type="number" min="1" max="5" name="quantity" value="<%=cartItem.getProductQty()%>"/>
                                             <button type="submit" class="btn btn-primary btn-sm" name="buttonaction" value="update">
                                                 <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>Update
                                             </button>
@@ -70,6 +70,7 @@
                                         <form action="ManageCart" method="post">
                                             <input type="hidden" name="userid" value="${sessionScope.userid}"/>
                                             <input type="hidden" name="productid" value="<%=cartItem.getProduct().getProductId()%>"/> 
+                                            <input type="hidden" name="quantity" value="<%=cartItem.getProductQty()%>"/>
                                             <button type="submit" class="btn btn-primary btn-sm" name="buttonaction" value="delete" >
                                                 <span class="glyphicon glyphicon-trash no-padding" aria-hidden="true"></span>
                                             </button>
