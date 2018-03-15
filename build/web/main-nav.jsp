@@ -13,7 +13,8 @@
     response.setHeader("Pragma", "no-cache"); // HTTP 1.0
     response.setHeader("Expires", "0"); // Proxies
     if ((pageName.equals("dashboard.jsp") || pageName.equals("cms-product-create.jsp") || 
-                pageName.equals("cms-product-edit.jsp") || pageName.equals("cms-product-manage.jsp")) 
+                pageName.equals("cms-product-edit.jsp") || pageName.equals("cms-product-manage.jsp") || 
+                pageName.equals("shopping-cart.jsp") || pageName.equals("shop-checkout.jsp")) 
                 && session.getAttribute("userid") == null) {
         response.sendRedirect("login.jsp");
         

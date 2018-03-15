@@ -32,12 +32,6 @@ div.inner-div {
     margin: auto;
 }
 
-div.inner-div-full-width { /* Used for Shop pages */
-    padding-top: 10px;
-    margin: auto;
-    min-height: 400px;
-}
-
 div.centered-content { /* Used for Empty/Restricted page messages */
     padding-top: 100px; 
     text-align: center; 
@@ -79,11 +73,15 @@ h4.cart {
     margin-bottom: 0px;
 }
 
+h4.padding-bottom {
+    padding-bottom: 30px;
+}
+
 table.float-right {
     float: right;
 }
 
-.table>tbody>tr>td.cart { /* Bootstrap override - Used for tables on Shop pages */
+.table>tbody>tr>td.cart, th.cart { /* Bootstrap override - Used for tables on Shop pages */
     vertical-align: middle;
 }
 
@@ -91,7 +89,7 @@ li.aligned-right { /* Bootstrap override - Used for Cart page items */
     text-align: right; 
 }
 
-td.aligned-right { /* Bootstrap override - For tables on Shop pages */
+td.aligned-right , th.aligned-right { /* Bootstrap override - For tables on Shop pages */
     text-align: right;
 }
 

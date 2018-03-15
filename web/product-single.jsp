@@ -47,15 +47,17 @@
                                     <form action="AddToCart" method="post">
                                         <input type="hidden" name="userid" value="${sessionScope.userid}"/>
                                         <input type="hidden" name="productid" value="<%=p.getProductId()%>"/>
-
-                                        <select class="selectpicker" name="quantity">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <select class="form-control" name="quantity">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <!--input type="number" min="1" max="5" name="quantity" value="1"/-->
 
                                         <button type="submit" class="btn btn-primary" name="addtocart">
@@ -86,7 +88,7 @@
                         }
                     %>
                 </c:if>
-                <h4>Go back to <a href="product-list.jsp">product list</a> page</h4>
+                <h4 class="padding-bottom">Go back to <a href="product-list.jsp">product list</a> page</h4>
             
             </div> <!-- /.inner-div -->
         </div> <!-- /.container -->

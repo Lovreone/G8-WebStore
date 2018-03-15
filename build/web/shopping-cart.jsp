@@ -21,7 +21,7 @@
         <div class="container stylish-div-background">
             <h2>Shopping cart</h2>
             
-            <div class="inner-div-full-width">
+            <div class="inner-div">
                 
             <c:choose> 
                 <c:when test="${sessionScope.userid != null && sessionScope.isadmin == false}"><%-- USER ONLY --%>
@@ -36,20 +36,20 @@
                     
                     <!-- SINGLE CART ITEM -->
                     <div class="panel panel-default s-bottom-spacing">
-                        <div class="panel-heading"></div>
-                        <div class="panel-body custom-spacing-cart"> 
+                        <div class="panel-heading">
+                            <h4 class="cart"><b><%=cartItem.getProduct().getProductName()%></b></h4>
+                        </div>
+                        <div class="panel-body custom-spacing-cart">
                             <table class="table table-responsive no-bottom-spacing">
-                                <tr>
-                                    <th>Product:</th>
+                                <tr> 
+                                    <th>Image:</th>
                                     <th>Quantity:</th>
                                     <th>Unit price:</th>
                                     <th></th>
                                 </tr>
                                 <tr>
-                                    <td class="cart">
-                                        <h4 class="cart">
-                                            <%=cartItem.getProduct().getProductName()%>
-                                        </h4>
+                                    <td>
+                                        <img src="<%=cartItem.getProduct().getProductDetails().getImagePath()%>" height="35 px" width="auto" alt=""/>
                                     </td>
                                     <td>
                                         <form action="ManageCart" method="post">
