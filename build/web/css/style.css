@@ -52,7 +52,7 @@ div.centered-content { /* Used for Empty/Restricted page messages */
     vertical-align: middle; 
 }
 
-div.footer {
+div.footer, ul.padding-top {
     padding-top: 15px;
 }
 
@@ -97,7 +97,7 @@ table.float-right {
     float: right;
 }
 
-.table>tbody>tr>td.cart, th.cart { /* Bootstrap override - Used for tables on Shop pages */
+.table>tbody>tr>td.vertical-center { /* Bootstrap override - Used for tables on Shop pages */
     vertical-align: middle;
 }
 

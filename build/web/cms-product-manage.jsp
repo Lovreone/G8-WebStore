@@ -17,84 +17,93 @@
     <body>
         <%@include file="main-nav.jsp"%> 
         <div class="container stylish-div-background">
-            <h2>CMS: Manage Products</h2>
+            <h2>CMS: Manage Products</h2> 
             <div class="inner-div">
                 
-            <c:choose>
-                <c:when test="${sessionScope.userid != null && sessionScope.isadmin == true}"> <%-- ADMIN ONLY --%>
-                    
-                    <h3><b>Manage Products</b> | <a href="cms-product-create.jsp">Create product</a></h3>
-                    <table class="table table-striped table-responsive">
-                        <tr>
-                            <th>ID</th>
-                            <th>Model</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>ImagePath</th>
-                            <th></th>
-                        </tr>  
-                    <%
-                        ProductDao pd = new ProductDao();
-                        List<Product> productsList = pd.getAllProducts(); 
-                        for (Product product : productsList) {         
-                    %>
-                        <tr>
-                            <td><%=product.getProductId()%></td>
-                            <td><a href="product-single.jsp?id=<%=product.getProductId()%>" target="blank"><%=product.getProductName()%></a></td>
-                            <td><%=product.getUnitPrice()%></td>
-                            <td><%=product.getStockQuantity()%></td>
-                            <td><%=product.getProductDetails().getImagePath()%></td>
-                            <td>
-                                <form action="ManageProducts" method="post">
-                                    <%--a href="product-single.jsp?id=<%=product.getProductId()%>" target="blank" class="btn btn-default" role="button">
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"/>
-                                    </a--%>  
-                                    <input type="hidden" name="productid" value="<%=product.getProductId()%>"/>
-                                    <button type="submit" class="btn btn-primary" name="buttonaction" value="edit">
-                                        <span class="glyphicon glyphicon-cog" aria-hidden="true"/>
-                                    </button>
-                                    <button type="submit" class="btn btn-primary" name="buttonaction" value="delete" onClick="return areYouSure()">
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"/>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    <%
-                        }
-                        if (productsList.isEmpty()) out.print("<h3 style='text-align: center;'>No products found in database.</h3>");
-                    %>
-                    </table>
+                <div class="col-md-12 pretty-form-bckg">    
+                    <c:choose>
+                        <c:when test="${sessionScope.userid != null && sessionScope.isadmin == true}"> <%-- ADMIN ONLY --%>
 
-                    <script>
-                        function areYouSure() {
-                          if (!confirm('You are about to delete this product!')) return false;
-                        }
-                    </script>
-                    
-                </c:when><%-- /ADMIN ONLY --%>
-                <c:when test="${sessionScope.userid != null && sessionScope.isadmin == false}"><%-- USER ONLY --%>
-                    <div class="inner-div" style="text-align: center; vertical-align: middle;">
-                        <h1>Restricted page</h1>
-                        <h3>You do not have permissions to access this page!</h3> 
-                        <h3>Go to your <a href="dashboard.jsp">Dashboard</a>.</h3>
-                    </div>
-                </c:when> <%-- /USER ONLY --%>       
-                <c:when test="${sessionScope.userid == null}"> <%-- LOGGED OUT --%>
-                    <div class="inner-div" style="text-align: center; vertical-align: middle;">
-                        <h1>Restricted page</h1>
-                        <h3>You must be logged in in order to access this page!</h3> 
-                        <h3>Click here to <a href="login.jsp">login</a>.</h3>
-                    </div>
-                </c:when> <%-- /LOGGED OUT --%>
-                <c:otherwise><%-- ELSE --%>
-                    <div class="inner-div" style="text-align: center; vertical-align: middle;">
-                        <h1>Restricted page</h1>
-                        <h3>Oops... Something went wrong!</h3> 
-                        <h3>Go back to <a href="index.jsp">Home page</a>.</h3>
-                    </div>
-                </c:otherwise><%-- /ELSE --%>    
-            </c:choose>      
-                  
+                            <ul class="nav nav-tabs padding-top">
+                                <li role="presentation" class="active"><a href="#">Manage all products</a></li>
+                                <li role="presentation"><a href="cms-product-create.jsp">Add a new product</a></li> 
+                            </ul>
+
+                            <table class="table table-striped table-responsive padding-top">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Model</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>ImagePath</th>
+                                    <th></th>
+                                </tr>  
+                                <%
+                                    ProductDao pd = new ProductDao();
+                                    List<Product> productsList = pd.getAllProducts();
+                                    for (Product product : productsList) {
+                                %>
+                                <tr>
+                                    <td class="vertical-center"><%=product.getProductId()%></td>
+                                    <td class="vertical-center"><a href="product-single.jsp?id=<%=product.getProductId()%>" target="blank"><%=product.getProductName()%></a></td>
+                                    <td class="vertical-center"><%=product.getUnitPrice()%></td>
+                                    <td class="vertical-center"><%=product.getStockQuantity()%></td>
+                                    <td class="vertical-center"><%=product.getProductDetails().getImagePath()%></td>
+                                    <td class="vertical-center">
+                                        <form action="ManageProducts" method="post">
+                                            <%--a href="product-single.jsp?id=<%=product.getProductId()%>" target="blank" class="btn btn-default" role="button">
+                                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"/>
+                                            </a--%>  
+                                            <input type="hidden" name="productid" value="<%=product.getProductId()%>"/>
+                                            <button type="submit" class="btn btn-primary btn-sm" name="buttonaction" value="edit">
+                                                <span class="glyphicon glyphicon-cog no-padding" aria-hidden="true"/>
+                                            </button>
+                                            <button type="submit" class="btn btn-primary btn-sm" name="buttonaction" value="delete" onClick="return areYouSure()">
+                                                <span class="glyphicon glyphicon-trash no-padding" aria-hidden="true"/>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <%
+                                    }
+                                    if (productsList.isEmpty()) {
+                                        out.print("<h3 style='text-align: center;'>No products found in database.</h3>");
+                                    }
+                                %>
+                            </table>
+
+                            <script>
+                                function areYouSure() {
+                                    if (!confirm('You are about to delete this product!'))
+                                        return false;
+                                }
+                            </script>
+
+                        </c:when><%-- /ADMIN ONLY --%>
+                        <c:when test="${sessionScope.userid != null && sessionScope.isadmin == false}"><%-- USER ONLY --%>
+                            <div class="inner-div" style="text-align: center; vertical-align: middle;">
+                                <h1>Restricted page</h1>
+                                <h3>You do not have permissions to access this page!</h3> 
+                                <h3>Go to your <a href="dashboard.jsp">Dashboard</a>.</h3>
+                            </div>
+                        </c:when> <%-- /USER ONLY --%>       
+                        <c:when test="${sessionScope.userid == null}"> <%-- LOGGED OUT --%>
+                            <div class="inner-div" style="text-align: center; vertical-align: middle;">
+                                <h1>Restricted page</h1>
+                                <h3>You must be logged in in order to access this page!</h3> 
+                                <h3>Click here to <a href="login.jsp">login</a>.</h3>
+                            </div>
+                        </c:when> <%-- /LOGGED OUT --%>
+                        <c:otherwise><%-- ELSE --%>
+                            <div class="inner-div" style="text-align: center; vertical-align: middle;">
+                                <h1>Restricted page</h1>
+                                <h3>Oops... Something went wrong!</h3> 
+                                <h3>Go back to <a href="index.jsp">Home page</a>.</h3>
+                            </div>
+                        </c:otherwise><%-- /ELSE --%>    
+                    </c:choose>     
+                </div>
+
             </div> <!-- /.inner-div -->
         </div> <!-- /.container -->
         <%@include file="footer.jsp"%>

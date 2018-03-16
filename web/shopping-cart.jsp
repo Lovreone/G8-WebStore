@@ -61,7 +61,7 @@
                                             </button>
                                         </form>
                                     </td>
-                                    <td class="cart">
+                                    <td class="vertical-center">
                                         <h4 class="cart">
                                             <%=cartItem.getProduct().getUnitPrice()%> $
                                         </h4>
