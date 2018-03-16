@@ -29,7 +29,7 @@
                                     <h3>Shipping information</h3>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group"> <!-- Bootstrap column pairs: 4+8(Responsive ok) 3+9(Responsive not ok) -->
                                 <label for="inputFirstName" class="col-sm-4 control-label">First name</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" maxlength="45" id="inputFirstName" placeholder="First name" name="first_name" value="${sessionScope.fname}" required/>
@@ -53,7 +53,7 @@
                                   <input type="text" class="form-control" maxlength="45" id="inputCountry" placeholder="Country" name="country" value="" required/>
                                 </div>
                             </div>
-                            <div class="form-group"> <!-- 3-9 4-8(Responsive ok)-->
+                            <div class="form-group"> 
                                 <label for="inputStreetAddress" class="col-sm-4 control-label">Street address</label>
                                 <div class="col-sm-8">
                                   <input type="text" class="form-control" maxlength="95" id="inputStreetAddress" placeholder="Street address" name="street_address" value="" required/>

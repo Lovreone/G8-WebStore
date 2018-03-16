@@ -139,40 +139,13 @@ public class CreateOrder extends HttpServlet {
         ################################################# */
         
         /*#################################################
-           6. COMPLETE ACTIVE ORDER > CREATE NEW PENDING ORDER - TEST (Must be Logged in!) - WORKS!
+           6. COMPLETE ACTIVE ORDER > CREATE NEW PENDING ORDER
           #################################################
-        Desc: Getting an existing active Order from DB by logged in User's id. Method should
-        return the "pending" Order for that User, which should be only 1 result.
-        Creation of OrderDetails object (needed for Order completion), linking Order
-        with OrderDetails, updating status to "completed". Updating exising Order
-        will both Update status and create a new OrderDetails linked to it. After
-        existing Order is "completed" we create a new "pending" Order for that User.
-        Note: This logic tests if Hibernate mapping between Order and OrderDetails
-        (OneToOne) is implemented correctly. This logic will be used at the end 
-        of the shopping proces when a User completes an order.
-        ################################################# 
-        
-        Order order = oDao.getActiveOrder(userId);
-        OrderDetails od = new OrderDetails("Pera", "Peric", "Beograd", "Serbia", "Petra Lekica 3/2", "Visa", "1234567890123456", 12, 2019, "Pera Peric", 123);
-        order.setOrderDetails(od);
-        od.setOrder(order);
-        order.setStatus("completed");
-        oDao.updateOrder(order);
-        out.println("------------------------\nUPDATE ORDER - CHANGES:\n------------------------\n"
-                + "Which Order is updated in DB as 'completed'?\n\t" + order.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()) - java.lang.StackOverflowError
-                + "Order's Details saved in DB are:\n\t" + od.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()).getOrderDetails() - java.lang.StackOverflowError
-        );
-        od = null;
-        order = new Order("pending", 0, "00.00.0000 00:00");
-        User u = uDao.getSingleUser(userId);  
-        order.setUser(u);
-        boolean status = oDao.createOrder(order);
-        out.println("------------------------\nCREATE ORDER - CHANGES:\n------------------------\n"
-                + "Is new 'pending' Order creation for this User successful?\n\t" + status + "\n"
-                + "New 'pending' Order created in DB:\n\t" + order.toString() + "\n"
-        ); 
-        */
+            Migrated to CompleteOrder servlet
+        ################################################# */
                 
+        
+        
         
         
         /*#################################################
