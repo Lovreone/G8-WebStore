@@ -32,6 +32,20 @@ div.inner-div {
     margin: auto;
 }
 
+
+div.pretty-form-bckg { /* Used on Login & Register page forms */
+    background-color: #f9f9f9;
+    border: 1px solid #909090;
+    border-radius: 4px;
+    box-shadow: 2px 2px 5px #888888;
+    min-height: 250px;
+    margin-bottom: 100px;
+}
+
+form.pretty-form-padding { /* Used on Login page form */
+   padding-top: 50px; 
+}
+
 div.centered-content { /* Used for Empty/Restricted page messages */
     padding-top: 100px; 
     text-align: center; 
@@ -54,9 +68,11 @@ textarea {
     resize: vertical;
 }
 
-.carousel-control { /* Bootstrap overide - Solves Home Slider bottom shadow issue */
-    bottom: 25px;    
-}
+/* 
+Bootstrap overide:
+Previously used to solve Home Slider bottom shadow issue, now seems unnecessary
+.carousel-control { bottom: 25px; }
+*/
 
 ul.contact-items li {
     list-style: none;
