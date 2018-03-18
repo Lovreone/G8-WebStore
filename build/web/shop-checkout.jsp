@@ -15,12 +15,12 @@
         <%@include file="main-nav.jsp"%> 
         <div class="container stylish-div-background">
             <h2>Checkout</h2>
-            
+
             <div class="inner-div">
-                
+
                 <form class="form-horizontal" action="CompleteOrder" method="post">
                     <div class="row">
-                        
+
                         <!-- LEFT COLUMN - SHIPPING INFORMATION-->
                         <div class="col-md-6">
                             <div class="form-group">
@@ -44,23 +44,23 @@
                             <div class="form-group">
                                 <label for="inputCity" class="col-sm-4 control-label">City</label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" maxlength="45" id="inputCity" placeholder="City" name="city" value="" required/>
+                                    <input type="text" class="form-control" maxlength="45" id="inputCity" placeholder="City" name="city" value="" required/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputCountry" class="col-sm-4 control-label">Country</label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" maxlength="45" id="inputCountry" placeholder="Country" name="country" value="" required/>
+                                    <input type="text" class="form-control" maxlength="45" id="inputCountry" placeholder="Country" name="country" value="" required/>
                                 </div>
                             </div>
                             <div class="form-group"> 
                                 <label for="inputStreetAddress" class="col-sm-4 control-label">Street address</label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" maxlength="95" id="inputStreetAddress" placeholder="Street address" name="street_address" value="" required/>
+                                    <input type="text" class="form-control" maxlength="95" id="inputStreetAddress" placeholder="Street address" name="street_address" value="" required/>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- RIGHT COLUMN - BILLING INFORMATION-->
                         <div class="col-md-6">
                             <div class="form-group">
@@ -107,7 +107,7 @@
                                 </div>
                             </div>        
                         </div>
-                        
+
                         <!-- SUBMIT BUTTON AND OTHER LINKS -->
                         <div>
                             <div class="panel-body one-third">  
@@ -119,20 +119,20 @@
                                 <table class="float-right">
                                     <tr>
                                         <td colspan="3" class="aligned-right">
-                                        <button type="submit" class="btn btn-primary btn-lg" name="buttonaction" value="purchase">
-                                            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true" value="purchase"></span>Complete Purchase
-                                        </button>
+                                            <button type="submit" class="btn btn-primary btn-lg" name="buttonaction" value="purchase">
+                                                <span class="glyphicon glyphicon-ok-sign" aria-hidden="true" value="purchase"></span>Complete Purchase
+                                            </button>
                                         </td>
                                     </tr>
                                 </table>   
                             </div>
                             <div class="panel-body clear"></div>
                         </div>
-                          
+
                     </div>      
                 </form>
-                
-                  
+
+
             </div> <!-- /.inner-div -->
         </div> <!-- /.container -->
         <%@include file="footer.jsp"%>

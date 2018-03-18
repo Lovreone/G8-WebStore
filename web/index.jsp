@@ -13,11 +13,9 @@
     </head>
     <body>
         <%@include file="main-nav.jsp"%> 
-        <div class="container" style="vertical-align: auto;">
-            
-            <div style="text-align: center;">
-                <h2>Welcome to our super awesome cell phone store!!!</h2>
-            </div>
+        <div class="container">
+
+            <h2 class="centered">Welcome to our super awesome cell phone store!!!</h2>
             
             <!-- Documentation: https://getbootstrap.com/docs/3.3/javascript/#carousel-usage-->
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -62,7 +60,6 @@
                         </div-->
                     </div>
 
-
                 </div>
 
                 <!-- Controls -->
@@ -76,10 +73,8 @@
                 </a>
             </div>
 
-            <div style="text-align: center;">
-                <h2>Check out our list of <a href="product-list.jsp">currently avilable products</a>!</h2>
-            </div>
-            
+            <h2 class="centered">Check out our list of <a href="product-list.jsp">currently avilable products</a>!</h2>
+
         </div> <!-- /.container -->
         <%@include file="footer.jsp"%>
     </body>

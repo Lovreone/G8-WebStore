@@ -42,7 +42,7 @@
                     }
                 %>
                 </div> 
-                <% if (productsList.isEmpty()) out.print("<h3 style='text-align: center;'>No products found in database.</h3>"); %>
+                <% if (productsList.isEmpty()) out.print("<div class='centered-content'><h3>No products found in database.</h3></div>"); %>
 
             </div> <!-- /.inner-div -->
         </div> <!-- /.container -->

@@ -32,7 +32,6 @@ div.inner-div {
     margin: auto;
 }
 
-
 div.pretty-form-bckg { /* Used on Login & Register page forms */
     background-color: #f9f9f9;
     border: 1px solid #909090;
@@ -40,10 +39,6 @@ div.pretty-form-bckg { /* Used on Login & Register page forms */
     box-shadow: 2px 2px 5px #888888;
     min-height: 250px;
     margin-bottom: 100px;
-}
-
-form.pretty-form-padding { /* Used on Login page form */
-   padding-top: 50px; 
 }
 
 div.centered-content { /* Used for Empty/Restricted page messages */
@@ -54,59 +49,6 @@ div.centered-content { /* Used for Empty/Restricted page messages */
 
 div.footer, ul.padding-top {
     padding-top: 15px;
-}
-
-span.no-padding { /* Bootstrap overide - Use for button icons without text */
-    padding-right: 0px;
-}
-
-long-words-filter { 
-    overflow:hidden; /* or overflow:scroll; - forses internal scroll inside a div */
-}
-
-textarea {
-    resize: vertical;
-}
-
-/* 
-Bootstrap overide:
-Previously used to solve Home Slider bottom shadow issue, now seems unnecessary
-.carousel-control { bottom: 25px; }
-*/
-
-ul.contact-items li {
-    list-style: none;
-    margin-left: -20px;
-}
-
-.glyphicon { /* Bootstrap override - Used for Contact us li items */
-    padding-right: 10px; 
-}
-
-h4.cart { 
-    font-size: 17px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-h4.padding-bottom {
-    padding-bottom: 30px;
-}
-
-table.float-right {
-    float: right;
-}
-
-.table>tbody>tr>td.vertical-center { /* Bootstrap override - Used for tables on Shop pages */
-    vertical-align: middle;
-}
-
-li.aligned-right { /* Bootstrap override - Used for Cart page items */
-    text-align: right; 
-}
-
-td.aligned-right , th.aligned-right { /* Bootstrap override - For tables on Shop pages */
-    text-align: right;
 }
 
 div.one-third { /* Three columns, use for 1/3 and 2/3 */
@@ -133,12 +75,49 @@ div.custom-spacing-cart {
     padding: 10px 5px 0 5px;
 }
 
-table.no-bottom-spacing {
-    margin-bottom: 10px;
+form.pretty-form-padding { /* Used on Login page form */
+    padding-top: 50px; 
 }
 
-input.margin-offset {
-    margin-bottom: 3px;
+span.no-padding { /* Bootstrap overide - Use for button icons without text */
+    padding-right: 0px;
+}
+
+long-words-filter { 
+    overflow:hidden; /* or overflow:scroll; - forses internal scroll inside a div */
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* 
+Bootstrap overide:
+Previously used to solve Home Slider bottom shadow issue, now seems unnecessary
+.carousel-control { bottom: 25px; }
+*/
+
+ul.contact-items li {
+    list-style: none;
+    margin-left: -20px;
+}
+
+li.aligned-right { /* Bootstrap override - Used for Cart page items */
+    text-align: right; 
+}
+
+h2.centered {
+    text-align: center;
+}
+
+h4.cart { 
+    font-size: 17px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+h4.padding-bottom {
+    padding-bottom: 30px;
 }
 
 p.validation-error {
@@ -151,3 +130,34 @@ p.success-message {
     font-size: 15px;  
 }
 
+table.no-bottom-spacing {
+    margin-bottom: 10px;
+}
+
+table.float-right {
+    float: right;
+}
+
+.table>tbody>tr>td.vertical-center { /* Bootstrap override - Used for tables on Shop pages */
+    vertical-align: middle;
+}
+
+td.aligned-right , th.aligned-right { /* Bootstrap override - For tables on Shop pages */
+    text-align: right;
+}
+
+input.margin-offset {
+    margin-bottom: 3px;
+}
+
+img.wrap-text { /* In case you need text to wrap around the image and look decent */
+    margin: 0 20px 20px 0;
+}
+
+nav.header-shadow {
+    box-shadow: 0px 5px 20px #888888;   
+}
+
+.glyphicon { /* Bootstrap override - Used for Contact us li items */
+    padding-right: 10px; 
+}

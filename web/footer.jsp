@@ -4,7 +4,6 @@
             <div class="col-md-8">
                 <p>
                    <a href="about.jsp">About us</a> |
-                   <a href="videos.jsp">S7-Video</a> |
                    <a href="terms.jsp">Terms & Conditions</a> | 
                    <a href="contact.jsp">Contact us</a>
                 </p>

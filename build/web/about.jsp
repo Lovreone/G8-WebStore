@@ -17,7 +17,7 @@
             <h2>About us</h2>
             
             <div class="inner-div">
-                <img src="images/charlie-chaplin.jpg" alt="Charlie Chaplin" width="300" align="left" style="margin: 0 20px 15px 0;"/>
+                <img class="wrap-text" src="images/charlie-chaplin.jpg" alt="Charlie Chaplin" width="300" align="left" />
             
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id tempor nibh. Sed dignissim tortor ante, vel porttitor est egestas nec. Donec luctus turpis ut felis accumsan, in facilisis sem sagittis. In id est tortor. Mauris nibh ante, scelerisque vitae magna et, posuere semper justo. Integer venenatis magna at elementum venenatis. Maecenas eu mi eget neque finibus rutrum sit amet sed lectus. Aenean ac elit et mi posuere finibus quis at quam. Aliquam erat volutpat. Curabitur non consectetur ante. Phasellus quis metus id sapien fringilla fringilla. Curabitur vestibulum faucibus tortor, non malesuada dolor tincidunt sit amet. Donec quam arcu, pretium et vehicula quis, pharetra vel tortor. Donec tempus tellus risus, ut placerat sapien pellentesque et. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
 

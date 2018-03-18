@@ -24,7 +24,7 @@
                     <div class="col-md-2"></div>
                     <div class="col-md-8 pretty-form-bckg">
                         <c:if test="${sessionScope.userid != null}"><!-- LOGGED IN -->           
-                            <div class="inner-div" style="text-align: center; vertical-align: middle;">
+                            <div class="inner-div centered-content">
                                 <h1>You are already logged in!</h1>
                                 <h3>Go to your <a href="dashboard.jsp">Dashboard</a>.</h3>
                             </div>

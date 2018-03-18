@@ -30,7 +30,7 @@
 <!-- Documentation http://getbootstrap.com/docs/3.3/components/#navbar -->
 <!-- working example https://getbootstrap.com/docs/3.3/examples/navbar-fixed-top/-->
 <!-- navbar-static-top OR navbar-fixed-top-->
-<nav class="navbar <%=navTheme%> navbar-fixed-top" style="box-shadow: 0px 5px 20px #888888"> <!-- navbar-inverse -->
+<nav class="navbar <%=navTheme%> navbar-fixed-top header-shadow">
     <div class="container">
 
         <div class="navbar-header">

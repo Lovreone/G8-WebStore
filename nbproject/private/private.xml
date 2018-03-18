@@ -4,10 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/web/a-order-tests.jsp</file>
+            <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/web/cms-product-create.jsp</file>
+            <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/web/css/bootstrap-theme.min.css</file>
+            <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/src/java/com/app/servlets/CompleteOrder.java</file>
             <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/web/cms-product-manage.jsp</file>
-            <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/src/java/com/app/domains/Order.java</file>
+            <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/web/css/bootstrap.min.css</file>
+            <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/web/css/style.css</file>
+            <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/web/shop-checkout.jsp</file>
+            <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/web/cms-product-edit.jsp</file>
             <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/web/shopping-cart.jsp</file>
-            <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/src/java/com/app/domains/OrderProduct.java</file>
             <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/src/java/com/app/dao/OrderDao.java</file>
             <file>file:/C:/Users/Lovreone/Documents/NetBeansProjects/G8-WebStore/src/java/com/app/servlets/CreateOrder.java</file>
         </group>

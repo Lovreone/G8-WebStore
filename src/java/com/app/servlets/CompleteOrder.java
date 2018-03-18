@@ -130,8 +130,7 @@ public class CompleteOrder extends HttpServlet {
         order.setStatus("completed");
         oDao.updateOrder(order);
         
-        
-        out.println("------------------------\nUPDATE ORDER - CHANGES:\n------------------------\n"
+        out.println("------------------------\nUPDATE EXISTING 'PENDING' ORDER - CHANGES:\n------------------------\n"
                 + "Which Order is updated in DB as 'completed'?\n\t" + order.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()) - java.lang.StackOverflowError
                 + "Order's Details saved in DB are:\n\t" + od.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()).getOrderDetails() - java.lang.StackOverflowError
         );
@@ -142,9 +141,8 @@ public class CompleteOrder extends HttpServlet {
         User u = uDao.getSingleUser(userId);  
         order.setUser(u);
         boolean status = oDao.createOrder(order);
-        
-        
-        out.println("------------------------\nCREATE ORDER - CHANGES:\n------------------------\n"
+       
+        out.println("------------------------\nCREATE A NEW 'PENDING' ORDER - CHANGES:\n------------------------\n"
                 + "Is new 'pending' Order creation for this User successful?\n\t" + status + "\n"
                 + "New 'pending' Order created in DB:\n\t" + order.toString() + "\n"
         ); 

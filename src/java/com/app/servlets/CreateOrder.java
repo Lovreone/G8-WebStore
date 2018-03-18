@@ -104,7 +104,7 @@ public class CreateOrder extends HttpServlet {
         ProductDao pDao = new ProductDao();
         
         /*#################################################
-           1. CREATE A NEW ORDER MANUALLY - TEST (Must be Logged in!) - WORKS!
+           1. CREATE A NEW ORDER MANUALLY - TEST (Must be Logged in!)
           #################################################
         Desc: Manual creation of an Order, where we create a new Order object,
         get existing (Logged) User, connect User and Order and save Order to DB

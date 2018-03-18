@@ -36,7 +36,7 @@
                             <div class="col-5 col-sm-5 col-md-5">
                                 <img src="<%=p.getProductDetails().getImagePath()%>" class="img-responsive img-thumbnail" alt="<%=p.getProductName()%>"/>
                             </div>
-                            <div class="col-5 col-sm-5 col-md-5" style="text-align: left">
+                            <div class="col-5 col-sm-5 col-md-5">
                                 <h3><b>Model: </b><%=p.getProductName()%></h3>
                                 <h4><b>Price: </b><%=p.getUnitPrice()%> &euro;</h4>
                                 <%--<h4><b>Stock: </b><%=p.getStockQuantity()%></h4>--%>

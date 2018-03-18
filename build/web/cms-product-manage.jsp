@@ -19,7 +19,7 @@
         <div class="container stylish-div-background">
             <h2>CMS: Manage Products</h2> 
             <div class="inner-div">
-                
+
                 <div class="col-md-12 pretty-form-bckg">    
                     <c:choose>
                         <c:when test="${sessionScope.userid != null && sessionScope.isadmin == true}"> <%-- ADMIN ONLY --%>
@@ -67,35 +67,35 @@
                                 <%
                                     }
                                     if (productsList.isEmpty()) {
-                                        out.print("<h3 style='text-align: center;'>No products found in database.</h3>");
+                                        out.print("<div class='centered-content'><h3>No products found in database.</h3></div>");
                                     }
                                 %>
                             </table>
 
                             <script>
                                 function areYouSure() {
-                                    if (!confirm('You are about to delete this product!'))
+                                    if (!confirm('You are about to permanently delete this product from database!'))
                                         return false;
                                 }
                             </script>
 
                         </c:when><%-- /ADMIN ONLY --%>
                         <c:when test="${sessionScope.userid != null && sessionScope.isadmin == false}"><%-- USER ONLY --%>
-                            <div class="inner-div" style="text-align: center; vertical-align: middle;">
+                            <div class="inner-div centered-content">
                                 <h1>Restricted page</h1>
                                 <h3>You do not have permissions to access this page!</h3> 
                                 <h3>Go to your <a href="dashboard.jsp">Dashboard</a>.</h3>
                             </div>
                         </c:when> <%-- /USER ONLY --%>       
                         <c:when test="${sessionScope.userid == null}"> <%-- LOGGED OUT --%>
-                            <div class="inner-div" style="text-align: center; vertical-align: middle;">
+                            <div class="inner-div centered-content">
                                 <h1>Restricted page</h1>
                                 <h3>You must be logged in in order to access this page!</h3> 
                                 <h3>Click here to <a href="login.jsp">login</a>.</h3>
                             </div>
                         </c:when> <%-- /LOGGED OUT --%>
                         <c:otherwise><%-- ELSE --%>
-                            <div class="inner-div" style="text-align: center; vertical-align: middle;">
+                            <div class="inner-div centered-content">
                                 <h1>Restricted page</h1>
                                 <h3>Oops... Something went wrong!</h3> 
                                 <h3>Go back to <a href="index.jsp">Home page</a>.</h3>
