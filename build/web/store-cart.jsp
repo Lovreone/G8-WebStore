@@ -1,5 +1,5 @@
 <%-- 
-    Document   : shopping-cart
+    Document   : store-cart
     Created on : Mar 01, 2018, 16:40:20 PM
     Author     : Lovreone
 --%>
@@ -114,7 +114,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="aligned-right">
-                                        <form action="shop-checkout.jsp"> <%-- CartUpdateDelete --%>
+                                        <form action="store-shipping.jsp">
                                             <input type="hidden" name="userid" value="1"/>
                                             <input type="hidden" name="productid" value="1"/>
                                             <button type="submit" class="btn btn-primary btn-lg" name="buttonaction" value="checkout">

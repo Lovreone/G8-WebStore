@@ -156,7 +156,7 @@ public class AddToCart extends HttpServlet {
             // String status = oDao.addToCart(op); // SAVES
             // String status = oDao.mergeObjectTest(op); // MERGES
         
-        response.sendRedirect("shopping-cart.jsp");
+        response.sendRedirect("store-cart.jsp");
     }
 
     /**

@@ -73,7 +73,7 @@
                 </a>
             </div>
 
-            <h2 class="centered">Check out our list of <a href="product-list.jsp">currently avilable products</a>!</h2>
+            <h2 class="centered">Check out our list of <a href="product-list.jsp">currently available products</a>!</h2>
 
         </div> <!-- /.container -->
         <%@include file="footer.jsp"%>

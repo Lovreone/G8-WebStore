@@ -14,7 +14,7 @@
     response.setHeader("Expires", "0"); // Proxies
     if ((pageName.equals("dashboard.jsp") || pageName.equals("cms-product-create.jsp") || 
                 pageName.equals("cms-product-edit.jsp") || pageName.equals("cms-product-manage.jsp") || 
-                pageName.equals("shopping-cart.jsp") || pageName.equals("shop-checkout.jsp")) 
+                pageName.equals("store-cart.jsp") || pageName.equals("store-shipping.jsp")) 
                 && session.getAttribute("userid") == null) {
         response.sendRedirect("login.jsp");
         
@@ -58,8 +58,17 @@
                     
                 <!-- Only Logged in -->    
                 <c:if test="${sessionScope.userid != null}"> 
-                    <li><a href="dashboard.jsp">Dashboard</a></li>
+                    <li><a href="dashboard.jsp">Dashboard</a></li>    
                 </c:if>
+                    
+                <!-- Only User (Shopping cart) -->    
+                <c:if test="${sessionScope.userid != null && sessionScope.isadmin == false}"> 
+                    <li>
+                        <a href="store-cart.jsp">
+                            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"/>   
+                        </a>
+                    </li>      
+                </c:if>    
                 
                 <!-- Only Admin -->     
                 <c:if test="${sessionScope.userid != null && sessionScope.isadmin == true}">
@@ -80,7 +89,7 @@
                     <p class="navbar-text">Hi, <b>${sessionScope.fname}</b></p>
                     <li>
                         <a href="Logout">
-                         <span class="glyphicon glyphicon-off" aria-hidden="true"/>   
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"/>   
                         </a>
                     </li>
                 </c:if>

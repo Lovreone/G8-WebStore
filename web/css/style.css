@@ -12,8 +12,8 @@ body {
     /* background-image: url("../images/gplaypattern.png"); */ /* For testing different repeat patterns */
     background-image: url("../images/grunge_wall.png");
     background-repeat: repeat; 
-    margin-top: 60px; /* If header is fixed to the top - Bootstrap rquirement */
-    margin-bottom: 130px; /* # Depends on footer height - used so that content would not be hidden below footer on mobile reoulutions */
+    margin-top: 60px; /* If header is fixed to the top - Bootstrap requirement */
+    margin-bottom: 130px; /* # Depends on footer height - used so that content would not be hidden below footer on mobile resoulutions */
 }
 
 div.stylish-div-background {
@@ -42,7 +42,7 @@ div.pretty-form-bckg { /* Used on Login & Register page forms */
 }
 
 div.centered-content { /* Used for Empty/Restricted page messages */
-    padding-top: 100px; 
+    padding-top: 60px; 
     text-align: center; 
     vertical-align: middle; 
 }

@@ -143,7 +143,7 @@ public class ManageCart extends HttpServlet {
         String status = oDao.updateOrder(order);
         out.println("\nATTEMPTING TO SAVE CHANGES TO DB: " + status);
             
-        response.sendRedirect("shopping-cart.jsp");
+        response.sendRedirect("store-cart.jsp");
     
     }
 

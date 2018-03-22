@@ -8,13 +8,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Page not found</title> <!-- CHANGE!!!!-->
+        <title>Page not found</title>
         <%@include file="head-meta.jsp"%>
     </head>
     <body>
         <%@include file="main-nav.jsp"%> 
         <div class="container stylish-div-background">
-            <h2>Page not found</h2> <!-- CHANGE!!!!-->
+            <h2>Page not found</h2>
 
             <div class="inner-div centered-content">
                 <h1>Error 404: Requested page is not found.</h1>

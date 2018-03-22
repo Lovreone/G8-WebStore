@@ -148,7 +148,7 @@ public class CompleteOrder extends HttpServlet {
         ); 
         
         
-        // response.sendRedirect("shop-success.jsp");
+        // response.sendRedirect("store-success.jsp");
         
     }
 
