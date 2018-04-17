@@ -29,6 +29,7 @@
                                     <h3>Billing information</h3>
                                 </div>
                             </div>
+                            <input type="hidden" name="userid" value="${sessionScope.userid}"/>
                             <div class="form-group">
                                 <label for="selectCcType" class="col-sm-4 control-label">Card type</label>
                                 <div class="col-sm-8">
@@ -71,8 +72,8 @@
                                 <div class="col-sm-8">
                                     <a class="btn btn-default" href='store-cart.jsp'>Back to Cart</a>
                                     <a class="btn btn-default" href='store-shipping.jsp'>< Temp </a>
-                                    <button type="submit" class="btn btn-primary btn-lg" name="buttonaction" value="purchase">
-                                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true" value="purchase"></span>Confirm &AMP; Pay
+                                    <button type="submit" class="btn btn-primary btn-lg" name="buttonaction" value="completepurchase">
+                                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>Confirm &AMP; Pay
                                     </button> 
                                     <a class="btn btn-default" href='store-success.jsp'>Temp ></a>
                                 </div>

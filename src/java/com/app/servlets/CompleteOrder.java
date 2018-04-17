@@ -96,30 +96,68 @@ public class CompleteOrder extends HttpServlet {
         PrintWriter out = response.getWriter(); // Remove redirect at the end to see the logs
         
         String userId = request.getParameter("userid");
+        String buttonAction = request.getParameter("buttonaction");
+                
+        /*
+        User comes from Shipping page - form submission (shippinginfo):
+            get shipping data from form
+            if 0 will have to save partial data
+            if 1 will have to update partial data
+            redirect to billing page
+                      
+        User comes from Billing page - form submission (completepurchase):
+            get billing data from form
+            completes current pending order
+            creates new pending order
+            redirect to success page
+        */
         
-        // Get Shipping information params
-        String fName = request.getParameter("first_name");
-        String lName = request.getParameter("last_name");
-        String city = request.getParameter("city");
-        String country = request.getParameter("country");
-        String streetAddress = request.getParameter("street_address");
         
-        // Get Billing information params
-        String cardType = request.getParameter("cc_type");
-        String ccNumber = request.getParameter("cc_number");
-        String expDateMonth = request.getParameter("exp_month");
-        String expDateYear = request.getParameter("exp_year");
-        String cardHolderName = request.getParameter("card_holder_name");
-        String cvvNumber = request.getParameter("cvv_number");
-                       
+        // User comes from Shipping page (store-shipping.jsp) 
+        if (buttonAction.equals("shippinginfo")) {
+            
+            // Get Shipping information params
+            String fName = request.getParameter("first_name");
+            String lName = request.getParameter("last_name");
+            String city = request.getParameter("city");
+            String country = request.getParameter("country");
+            String streetAddress = request.getParameter("street_address");
+            
+            // TEMP CONSOLE LOG WITH PARAMETERS - WORKS!
+            out.println("\nSHIPPING INFO:\n----------------------------\n");
+            out.println(fName + "\n" + lName + "\n" + city + "\n" + country + "\n" + streetAddress + "\n");
+            
+            out.println("LOGIC DONE: Saving/Updating Shipping info for order!");
+            response.sendRedirect("store-billing.jsp");
+            
+        // User comes from Billing page (store-billing.jsp) 
+        } else if (buttonAction.equals("completepurchase")) {
+
+            // Get Billing information params
+            String cardType = request.getParameter("cc_type");
+            String ccNumber = request.getParameter("cc_number");
+            String expDateMonth = request.getParameter("exp_month");
+            String expDateYear = request.getParameter("exp_year");
+            String cardHolderName = request.getParameter("card_holder_name");
+            String cvvNumber = request.getParameter("cvv_number");
+            
+            // TEMP CONSOLE LOG WITH PARAMETERS - WORKS!
+            out.println("\nBILLING INFO:\n----------------------------\n");
+            out.println(cardType + "\n" + ccNumber + "\n" + expDateMonth + "\n" + expDateYear + "\n" + cardHolderName + "\n" + cvvNumber + "\n");
+            
+            out.println("LOGIC DONE: Saving Payment info, completing order, creating new order !");
+            response.sendRedirect("store-success.jsp");
+            
+        } else {
+
+            out.print("NEITHER BRANCH: An Error has occured!!!");
+        }
         
-        // TEMP CONSOLE LOG WITH PARAMETERS - WORKS!
-        out.println("\nSHIPPING INFO:\n----------------------------\n");
-        out.println(fName + "\n" + lName + "\n" + city + "\n" + country + "\n" + streetAddress + "\n");
-        out.println("\nBILLING INFO:\n----------------------------\n");
-        out.println(cardType + "\n" + ccNumber + "\n" + expDateMonth + "\n" + expDateYear + "\n" + cardHolderName + "\n" + cvvNumber + "\n");
+              
+        
+
        
-        
+        /*
         OrderDao oDao = new OrderDao();
         UserDao uDao = new UserDao();
         
@@ -130,7 +168,7 @@ public class CompleteOrder extends HttpServlet {
         order.setStatus("completed");
         oDao.updateOrder(order);
         
-        out.println("------------------------\nUPDATE EXISTING 'PENDING' ORDER - CHANGES:\n------------------------\n"
+        out.println("\n------------------------\nUPDATE EXISTING 'PENDING' ORDER - CHANGES:\n------------------------\n"
                 + "Which Order is updated in DB as 'completed'?\n\t" + order.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()) - java.lang.StackOverflowError
                 + "Order's Details saved in DB are:\n\t" + od.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()).getOrderDetails() - java.lang.StackOverflowError
         );
@@ -146,7 +184,7 @@ public class CompleteOrder extends HttpServlet {
                 + "Is new 'pending' Order creation for this User successful?\n\t" + status + "\n"
                 + "New 'pending' Order created in DB:\n\t" + order.toString() + "\n"
         ); 
-        
+        */
         
         // response.sendRedirect("store-success.jsp");
         
