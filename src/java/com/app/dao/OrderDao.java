@@ -7,10 +7,12 @@ package com.app.dao;
 
 import com.app.domains.Order;
 import com.app.domains.OrderProduct;
+import com.app.domains.Product;
 import com.app.util.HibernateUtil;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -152,8 +154,55 @@ public class OrderDao {
         return num > 0;
     }
     
+    
+    // Checks if OrderDetails row exists in database for specific Order - WORKS, USED
+    // Used on Shipping info page to check if info was prevoiusly saved (store-shipping.jsp)
+    public boolean orderDetailsExist(int orderId) {
+        int num = 0;
+        BigInteger bigInt = BigInteger.ZERO;
+        startSession();
+        try {
+            tx = session.beginTransaction();
+                        
+            SQLQuery sqlQuery = session.createSQLQuery("SELECT count(*) from order_details"
+                    + " WHERE order_id=" + orderId + ";");
+            bigInt = (BigInteger) sqlQuery.uniqueResult();
+            num = bigInt.intValue();
+            
+            tx.commit();
+        } catch (HibernateException ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println("Error: " + ex);
+        } finally {
+            stopSession();
+        }
         
+        return num > 0;
+    }
+    
+    // Calculates and returns total cart price based on provided (pending)Order - WORKS, USED
+    // It is used on CompleteOrder servlet, when order is completed, price is calculated and saved to db.
+    public int getTotalCartPrice(Order order) {
+        int totalPrice = 0;
+        
+        Set<OrderProduct> cartItemsList = order.getOrderProducts();
+        for (OrderProduct singleProduct : cartItemsList) {
+            totalPrice += singleProduct.getPk().getProduct().getUnitPrice() * singleProduct.getProductQty(); 
+        }
+        
+        return totalPrice;
+    }
+    
+        
+    
+    
+    
+    
     // ############ PROTOTYPES BELOW - DELETE WHEN DEEMED UNNECESSARY ############
+   
+    
     
     
     // Method should have add Product to cart, but is inconclusive - INCONCLUSIVE, NOT USED

@@ -151,7 +151,7 @@ public class AddToCart extends HttpServlet {
         String status = oDao.updateOrder(order); // UPDATES
         out.println("Attempting to update Order in DB: " + status);  
         
-        // ALTERNATE APPROACH (WORKING WITH OP ITEMS) - NOT USED, BUT WORKS   
+        // ALTERNATE APPROACH (WORKING WITH OP ITEMS) - NOT USED, BUT WORKS AS WELL   
         // It works directly with OP and is not what mkyong's tutorial intended
             // String status = oDao.addToCart(op); // SAVES
             // String status = oDao.mergeObjectTest(op); // MERGES

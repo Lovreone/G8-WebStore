@@ -14,24 +14,9 @@
     <body>
         <%@include file="main-nav.jsp"%> 
         <div class="container stylish-div-background">
-            <h2>Orders - CRUD Tests</h2> <!-- CHANGE!!!!-->
-
-
-            
-            <h5>Create Order - WORKS</h5> 
-            <ul>
-                <li>Order o = new Order("pending", 150, "14.06.2018 16:37");</li>
-                <li>daoObj.createOrder(o);</li>
-            </ul>
-            
-            <h5>Create Order & Order Details - WORKS</h5>   
-            <ul>
-                <li>Order o = new Order("pending", 150, "14.06.2018 16:37");</li>
-                <li>OrderDetails od = new OrderDetails("Pera", "Peric", "Beograd", "Serbia", "Petra Lekica 3/2", "Visa", "1234567890123456", 12, 2019, "Pera Peric", 123);</li>
-                <li>o.setOrderDetails(od);</li>
-                <li>od.setOrder(o);</li>
-                <li>daoObj.createOrder(o);</li>
-            </ul>
+            <h2>TESTING ENVIRONMENT</h2>
+ 
+            <h5>Testing environment</h5> 
             
             <form action="CreateOrder" method="post">
                 <!-- Hidden field product id -->
@@ -44,10 +29,6 @@
                 <input type="submit" value="Add to Cart">
             </form> 
              
-                
-            
-  
-                
                 
             <!-- 
             

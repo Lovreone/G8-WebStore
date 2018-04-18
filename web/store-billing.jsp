@@ -43,7 +43,6 @@
                                 <label for="inputCcNumber" class="col-sm-4 control-label">CC number</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" maxlength="23" id="inputCcNumber" placeholder="XXXX XXXX XXXX XXXX" name="cc_number" value="" autocomplete="off" required/> 
-                                    <!-- CHANGE CC NUMBER TO STRING IN DB!!! -->
                                 </div>
                             </div>
                             <div class="form-group">
@@ -64,7 +63,7 @@
                             <div class="form-group">
                                 <label for="inputCvvNumber" class="col-sm-4 control-label">CVV</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" type="number" min="1" max="9999" id="inputCvvNumber" placeholder="CVV Number" name="cvv_number" value="" autocomplete="off" required/>
+                                    <input class="form-control" type="number" min="1" max="999" id="inputCvvNumber" placeholder="CVV Number" name="cvv_number" value="" autocomplete="off" required/>
                                 </div>
                             </div>    
                             <div class="form-group">

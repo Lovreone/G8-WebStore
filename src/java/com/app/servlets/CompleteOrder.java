@@ -36,19 +36,12 @@ public class CompleteOrder extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CompleteOrder</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CompleteOrder at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        
+        /* In case user tries to access the servlet directly via URL
+           http://localhost:8080/G8-WebStore/CompleteOrder */
+        
+        response.sendRedirect("index.jsp"); 
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -98,23 +91,11 @@ public class CompleteOrder extends HttpServlet {
         String userId = request.getParameter("userid");
         String buttonAction = request.getParameter("buttonaction");
                 
-        /*
-        User comes from Shipping page - form submission (shippinginfo):
-            get shipping data from form
-            if 0 will have to save partial data
-            if 1 will have to update partial data
-            redirect to billing page
-                      
-        User comes from Billing page - form submission (completepurchase):
-            get billing data from form
-            completes current pending order
-            creates new pending order
-            redirect to success page
-        */
-        
         
         // User comes from Shipping page (store-shipping.jsp) 
         if (buttonAction.equals("shippinginfo")) {
+            
+            out.println("LOGIC DONE: Saving/Updating Shipping info for order!");
             
             // Get Shipping information params
             String fName = request.getParameter("first_name");
@@ -123,16 +104,32 @@ public class CompleteOrder extends HttpServlet {
             String country = request.getParameter("country");
             String streetAddress = request.getParameter("street_address");
             
-            // TEMP CONSOLE LOG WITH PARAMETERS - WORKS!
+            // STATUS LOG - PICKED UP FORM PARAMETERS - WORKS!
             out.println("\nSHIPPING INFO:\n----------------------------\n");
             out.println(fName + "\n" + lName + "\n" + city + "\n" + country + "\n" + streetAddress + "\n");
-            
-            out.println("LOGIC DONE: Saving/Updating Shipping info for order!");
+           
+            // CREATING ORDER-DETAILS FOR 'PENDING' ORDER, SAVING/UPDATING BOTH IN DB
+            OrderDao oDao = new OrderDao();
+            Order order = oDao.getActiveOrder(userId); 
+            OrderDetails od = new OrderDetails(fName, lName, city, country, streetAddress, "Visa", "0000000000000000", 0, 0, "0", 0);
+            order.setOrderDetails(od);
+            od.setOrder(order);
+            oDao.updateOrder(order);
+
+            // STATUS LOG - COMPLETING CURRENT 'PENDING' ORDER STATUS
+            out.println("\n------------------------\nUPDATE EXISTING 'PENDING' ORDER - CHANGES:\n------------------------\n"
+                    + "Which Order is updated in DB?\n\t" + order.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()) - java.lang.StackOverflowError
+                    + "Order's Details saved in DB are:\n\t" + od.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()).getOrderDetails() - java.lang.StackOverflowError
+            );
+            od = null;
+
             response.sendRedirect("store-billing.jsp");
             
         // User comes from Billing page (store-billing.jsp) 
         } else if (buttonAction.equals("completepurchase")) {
 
+            out.println("LOGIC DONE: Saving Payment info, completing order, creating new order !");
+            
             // Get Billing information params
             String cardType = request.getParameter("cc_type");
             String ccNumber = request.getParameter("cc_number");
@@ -141,52 +138,58 @@ public class CompleteOrder extends HttpServlet {
             String cardHolderName = request.getParameter("card_holder_name");
             String cvvNumber = request.getParameter("cvv_number");
             
-            // TEMP CONSOLE LOG WITH PARAMETERS - WORKS!
+            // STATUS LOG - PICKED UP FORM PARAMETERS - WORKS!
             out.println("\nBILLING INFO:\n----------------------------\n");
             out.println(cardType + "\n" + ccNumber + "\n" + expDateMonth + "\n" + expDateYear + "\n" + cardHolderName + "\n" + cvvNumber + "\n");
             
-            out.println("LOGIC DONE: Saving Payment info, completing order, creating new order !");
-            response.sendRedirect("store-success.jsp");
+            OrderDao oDao = new OrderDao();
+            /*int totalPrice;
+            oDao.*/
+            
+            
+            // UPDATING ORDER-DETAILS FOR 'PENDING' ORDER WITH BILLING INFO, 
+            // CALCULATING TOTAL CART PRICE, MARKING ORDER AS 'COMPLETED', SAVING BOTH TO DB 
+            Order order = oDao.getActiveOrder(userId);
+            OrderDetails od = order.getOrderDetails();
+                od.setCcType(cardType);
+                od.setCcNumber(ccNumber);
+                od.setExpMonth(Integer.parseInt(expDateMonth));
+                od.setExpYear(Integer.parseInt(expDateYear));
+                od.setCardHolder(cardHolderName);
+                od.setCvvNumber(Integer.parseInt(cvvNumber)); 
+            order.setOrderDetails(od);
+            od.setOrder(order);
+                order.setTotalPrice(oDao.getTotalCartPrice(order));
+                order.setStatus("completed");
+            oDao.updateOrder(order);
+            
+
+            // STATUS LOG - COMPLETING CURRENT 'PENDING' ORDER STATUS
+            out.println("\n------------------------\nUPDATE EXISTING 'PENDING' ORDER - CHANGES:\n------------------------\n"
+                    + "Which Order is updated in DB as 'completed'?\n\t" + order.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()) - java.lang.StackOverflowError
+                    + "Order's Details saved in DB are:\n\t" + od.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()).getOrderDetails() - java.lang.StackOverflowError
+            );
+            od = null;
+
+            // CREATING A NEW 'PENDING' ORDER FOR THAT USER
+            UserDao uDao = new UserDao();
+            order = new Order("pending", 0, "00.00.0000 00:00");
+            User u = uDao.getSingleUser(userId);  
+            order.setUser(u);
+            boolean status = oDao.createOrder(order);
+
+            // STATUS LOG - NEW 'PENDING' ORDER CREATION STATUS
+            out.println("------------------------\nCREATE A NEW 'PENDING' ORDER - CHANGES:\n------------------------\n"
+                    + "Is new 'pending' Order creation for this User successful?\n\t" + status + "\n"
+                    + "New 'pending' Order created in DB:\n\t" + order.toString() + "\n"
+            ); 
+            
+            // response.sendRedirect("store-success.jsp");
             
         } else {
 
             out.print("NEITHER BRANCH: An Error has occured!!!");
         }
-        
-              
-        
-
-       
-        /*
-        OrderDao oDao = new OrderDao();
-        UserDao uDao = new UserDao();
-        
-        Order order = oDao.getActiveOrder(userId);
-        OrderDetails od = new OrderDetails("Pera", "Peric", "Beograd", "Serbia", "Petra Lekica 3/2", "Visa", "1234567890123456", 12, 2019, "Pera Peric", 123);
-        order.setOrderDetails(od);
-        od.setOrder(order);
-        order.setStatus("completed");
-        oDao.updateOrder(order);
-        
-        out.println("\n------------------------\nUPDATE EXISTING 'PENDING' ORDER - CHANGES:\n------------------------\n"
-                + "Which Order is updated in DB as 'completed'?\n\t" + order.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()) - java.lang.StackOverflowError
-                + "Order's Details saved in DB are:\n\t" + od.toString() + "\n" // + oDao.getSingleOrder(order.getOrderId()).getOrderDetails() - java.lang.StackOverflowError
-        );
-        od = null;
-        
-        
-        order = new Order("pending", 0, "00.00.0000 00:00");
-        User u = uDao.getSingleUser(userId);  
-        order.setUser(u);
-        boolean status = oDao.createOrder(order);
-       
-        out.println("------------------------\nCREATE A NEW 'PENDING' ORDER - CHANGES:\n------------------------\n"
-                + "Is new 'pending' Order creation for this User successful?\n\t" + status + "\n"
-                + "New 'pending' Order created in DB:\n\t" + order.toString() + "\n"
-        ); 
-        */
-        
-        // response.sendRedirect("store-success.jsp");
         
     }
 
