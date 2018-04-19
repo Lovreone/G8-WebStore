@@ -11,6 +11,7 @@ import com.app.domains.Product;
 import com.app.util.HibernateUtil;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import org.hibernate.HibernateException;
@@ -59,13 +60,21 @@ public class OrderDao {
     
     // Retrieves specific Order from DB - WORKS, NOT USED
     // Will be used for Dashboard (User,Admin) later
-    // THROWS STACKOVERFLOW ERROR - INVESTIGATE FURTHER!!!
-    public Order getSingleOrder(int orderId) {
+    /* 
+       Most common way to get an object ( order = (Order) session.get(Order.class, orderId); )
+       used to work, but now it throws StackOverflow error (both .get() and .load() don't work).
+       This might be due to change from LAZY to EAGER in Order POJO mapping.
+    */
+    public Order getSingleOrder(String orderId) {
         Order order = new Order();
         startSession();
         try {
             tx = session.beginTransaction();
-            order = (Order) session.get(Order.class, orderId);
+           
+            Query query = session.createQuery("from Order o where o.orderId=:orderid");
+            query.setString("orderid", orderId);
+            order = (Order) query.list().get(0);
+           
             tx.commit();
         } catch (HibernateException ex) {
             if (tx != null) {
@@ -195,7 +204,54 @@ public class OrderDao {
         return totalPrice;
     }
     
-        
+    // Retrieves list of all Orders from DB - WORKS, NOT USED (*.jsp) 
+    // Will be used in CMS area, where admin should be able to view a list of all Orders
+    public List<Order> getAllOrders() {
+        List<Order> orders = new LinkedList<>();
+        startSession();
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from Order");
+            for (Object o : query.list()) {
+                orders.add((Order) o);
+            }
+            tx.commit();
+        } catch (HibernateException ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println("Error: " + ex);
+        } finally {
+            stopSession();
+        }
+        return orders;
+    }
+    
+    // Retrieves list of all Orders for specific User from DB - WORKS, NOT USED (*.jsp) 
+    // Will be used on User's dashboard page where he'll be able to see his previous Orders
+    public List<Order> getAllOrdersForUser(String userId) {
+        List<Order> orders = new LinkedList<>();
+        startSession();
+        try {
+            tx = session.beginTransaction();
+            // If only completed add in " and o.status='completed'" to the query
+            Query query = session.createQuery("from Order o where o.user=:userid");
+            query.setString("userid", userId);
+            for (Object o : query.list()) {
+                orders.add((Order) o);
+            }
+
+            tx.commit();
+        } catch (HibernateException ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println("Error: " + ex);
+        } finally {
+            stopSession();
+        }
+        return orders;
+    }
     
     
     

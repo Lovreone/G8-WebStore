@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -91,6 +93,7 @@ public class CreateOrder extends HttpServlet {
         String userId = request.getParameter("userid");
         
         PrintWriter out = response.getWriter();
+        out.println("<CreateOrder Servlet>");
         out.println("------------------------\nGENERAL STATUS LOG:\n------------------------\n"
                 + " Selected qty: " + qty + "\n"
                 + " ProductID: " + productId + "\n"
@@ -100,9 +103,52 @@ public class CreateOrder extends HttpServlet {
         out.println("\n###############################################################\n");
                 
         // GENERAL ITEMS USED FOR DATABASE OPERATIONS
-        OrderDao oDao = new OrderDao();
         UserDao uDao = new UserDao();
         ProductDao pDao = new ProductDao();
+        OrderDao oDao = new OrderDao();
+        
+        out.print("\n\nGET LIST OF ALL ORDERS (ADMIN) - LIST OF ALL ORDERS IN DB\n");
+        List<Order> orders = oDao.getAllOrders();
+        for (Order order : orders) {
+            out.print(order + "\n");
+        }
+        
+        out.print("\n\nGET LIST OF ALL ORDERS (USER '7') - USER WITH ONE ORDER\n");
+        List<Order> orders1 = oDao.getAllOrdersForUser("7");
+        for (Order order : orders1) {
+            out.print(order + "\n");
+        }
+        
+        out.print("\n\nGET LIST OF ALL ORDERS (USER '6') - USER WITH MULTIPLE ORDERS\n");
+        List<Order> orders2 = oDao.getAllOrdersForUser("6");
+        for (Order order : orders2) {
+            out.print(order + "\n");
+        }
+        
+        out.print("\n\nGET LIST OF ALL ORDERS (USER '1') - USER WITH NO ORDERS\n");
+        List<Order> orders3 = oDao.getAllOrdersForUser("1");
+        for (Order order : orders3) {
+            out.print(order + "\n");
+        }
+        if(orders3.isEmpty()) {
+            out.print("List is empty!");
+        }
+        
+        out.print("\n\nGET LIST OF ALL ORDERS (USER '2') - NON EXISTING USER\n");
+        List<Order> orders4 = oDao.getAllOrdersForUser("2");
+        for (Order order : orders4) {
+            out.print(order + "\n");
+        }
+        if(orders4.isEmpty()) {
+            out.print("List is empty!");
+        }
+        
+        Order order = oDao.getSingleOrder("14");
+        out.println("\n\n\n\nGET A SINGLE ORDER WITH ID=14\n" + order);
+        order = oDao.getSingleOrder("17");
+        out.println("\nGET A SINGLE ORDER WITH ID=17\n" + order);
+        order = oDao.getSingleOrder("16");
+        out.println("\nGET A SINGLE ORDER WITH ID=16\n" + order);
         
         /*#################################################
            1. CREATE A NEW ORDER MANUALLY - TEST (Must be Logged in!)
